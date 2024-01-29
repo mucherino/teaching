@@ -94,6 +94,10 @@ There will be 12 lectures, where
 Project topics not covered in these presentations are discussed
 without supporting slides. 
 
+### Lectures on Julia programming language
+
+Please follow [this link](./Julia/README.md).
+
 ## List of programming languages
 
 The assignment of the programming language to each
