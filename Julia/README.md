@@ -19,10 +19,14 @@ a syntax comparison with C programming language is given during the lectures.
 In C in fact, there are specific implementations for linear algebra, mainly the 
 [BLAS](http://www.netlib.org/blas/) library, which provides some basic matrix
 operations, and [LAPACK](http://www.netlib.org/lapack/) for more advanced operations,
-such as the solution to linear systems. The good news that these implementations 
+such as the solution to linear systems. The good news is that these implementations 
 are integrated into [Julia](https://julialang.org/), which is therefore capable 
 to exhibit performances in terms of computational time and quality of the solutions
-that are very close to those given by C implementations.
+that are very close to those given by C implementations. We also remark that there
+exist other software tools for modeling in linear programming, such as the 
+[AMPL](https://ampl.com/) modeling language. One main advantage of Julia is
+the capability of integrating various functionalities in one unique language,
+which also supports other paradigms, such as basic "imperative programming".
 
 ## Table of contents
 
@@ -33,7 +37,6 @@ that are very close to those given by C implementations.
 
 ## Links
 
-* [Back to PA course](../README.md)
-
-------------------------------
+* [Back to Advanced Programming course](../Advanced.md)
+* [Back to main repository page](../README.md)
 

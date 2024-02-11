@@ -77,10 +77,10 @@ of variables $x$. For example:
 $$
 \left\{
 \begin{array}{l}
-\sum_{i=1}^n {\tt meat[i]} \cdot x_i \ge 0.3 , \\
-\sum_{i=1}^n {\tt fish[i]} \cdot x_i \ge 0.6 , \\
-\sum_{i=1}^n {\tt rice[i]} \cdot x_i \le 0.4 , \\
-\sum_{i=1}^n {\tt pasta[i]} \cdot x_i \le 0.3 .
+\displaystyle\sum_{i=1}^n {\tt meat[i]} \cdot x_i \ge 0.3 , \\
+\displaystyle\sum_{i=1}^n {\tt fish[i]} \cdot x_i \ge 0.6 , \\
+\displaystyle\sum_{i=1}^n {\tt rice[i]} \cdot x_i \le 0.4 , \\
+\displaystyle\sum_{i=1}^n {\tt pasta[i]} \cdot x_i \le 0.3 .
 \end{array}
 \right.
 $$
@@ -157,10 +157,10 @@ After the definition, we can visualize the objective function as follows:
 Finally, we can include the constraints to our ```diet``` model by using the 
 ```@constraint``` macro:
 
-	@constraint(model,Meat, sum( meat[i]*x[i] for i in 1:n ) >= 0.3);
-	@constraint(model,Fish, sum( fish[i]*x[i] for i in 1:n ) >= 0.6);
-	@constraint(model,Rice, sum( rice[i]*x[i] for i in 1:n ) <= 0.4);
-	@constraint(model,Pasta, sum( pasta[i]*x[i] for i in 1:n) <= 0.3);
+	@constraint(diet,Meat, sum( meat[i]*x[i] for i in 1:n ) >= 0.3);
+	@constraint(diet,Fish, sum( fish[i]*x[i] for i in 1:n ) >= 0.6);
+	@constraint(diet,Rice, sum( rice[i]*x[i] for i in 1:n ) <= 0.4);
+	@constraint(diet,Pasta, sum( pasta[i]*x[i] for i in 1:n) <= 0.3);
 	@constraint(diet,Plate, sum( x[i] for i in 1:n ) <= 1.0);
 
 For the visualization of these constraints, we can simply type their names
@@ -206,4 +206,5 @@ of this linear program can be found in the file [diet.jl](./diet.jl).
 ## Links
 
 * [Summary](./README.md)
+
 
