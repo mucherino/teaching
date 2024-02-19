@@ -1,9 +1,9 @@
 
-# C programming
+# My own absolute value function
 
-## A simple C function
+## C version
 
-We consider the following small function in C:
+We consider the following simple function in C:
 
 	int myabs(int a)
 	{
@@ -13,7 +13,7 @@ We consider the following small function in C:
 
 The function, together with its header files, can also 
 be found in the file [myabs.c](./myabs.c). In order to 
-create an executable file, you can link it to the main 
+create an executable file, we can link it to the main 
 function in the file [main-myabs.c](./main-myabs.c).
 The reason for separating these two functions in two
 different files is that we'll compile only ```myabs```
@@ -21,12 +21,24 @@ down to llvm and assembly; we won't do the same for the
 main function (for which you can directly generate its
 *object* file).
 
-## Compiling to llvm
+In order to generate the llvm and assembly codes, we can 
+use the [```clang```](https://clang.llvm.org/) compiler 
+(the version ```6.0.0-1ubuntu2``` was used to generate the 
+codes below). The command to generate the llvm version of 
+the function from C is:
 
-The compilation to llvm can be performed by using the 
-```clang``` compiler. The resulting llvm code is in the
-file [myabs.ll](./myabs.ll). The code snippets of the
-code interesting us is given below:
+	clang -S -emit-llvm myabs.c -o myabs.ll
+
+The command to generate the assembly version (from llvm,
+or directly from C) is:
+
+	clang -S [input file] -o myabs.asm
+
+## llvm version
+
+The resulting [llvm](https://llvm.org) code is in the
+file [myabs.ll](./myabs.ll). The lines that are more 
+interesting for us are given below:
 
 	define i32 @myabs(i32) #0 {
 	  %2 = alloca i32, align 4
@@ -50,7 +62,13 @@ code interesting us is given below:
 	  ret i32 %10
 	}
 
-## Compiling to assembly
+Notice that the block of instructions under the label 6 may 
+be shorten by making direct reference to ```%4``` (instead of 
+reloading its value in ```%7```), but this will force the 
+assembly code to use additional memory in the central memory
+to save the variable and reload it thereafter.
+
+## Assembly version
 
 The ```clang``` compiler also allows us to compile from
 C code (or llvm code), to assembly. The full translation
@@ -67,7 +85,7 @@ on which we focus our attention are the following:
 	   movl    %eax, -4(%rbp)
 	   jmp     .LBB0_3
 	.LBB0_2:
-           movl    $0, -4(%rbp)
+	   movl    $0, -4(%rbp)
 	.LBB0_3:
 	   movl    -4(%rbp), %eax
 	   popq    %rbp
@@ -86,13 +104,15 @@ What about changing a little bit the assembly code?
 	.MY_SECOND_LABEL:
 	   retq
 
-Can you see the difference? What is the interest in changing
-this assembly code? The complete assembly code, equivalent to 
-the original C function (i.e. performing exactly the same job
+Can you see the difference? What interest in changing the 
+assembly code? The complete assembly code, equivalent to the 
+original C function (i.e. performing exactly the same task
 of the C function), can be found in the file 
 [myabs-handwritten.asm](./myabs-handwritten.asm).
 
 ## Links
 
+* [Next: Multiplying 4-bit integers by 15](./xfifteen.md)
+* [Back to low-level programming](./README.md)
 * [Back to main repository page](../README.md)
 
