@@ -1,16 +1,16 @@
 
 # High Performance Computing
 
-This content of this page represents an entire course for the 
+The content of this page represents an entire course for the 
 [ESIR](https://esir.univ-rennes.fr/en/welcome-eisr-graduate-school-excellence)
 engineering school of University of Rennes, and partially for the parallel 
-computing course taugh at [ISTIC](https://istic.univ-rennes.fr/) for the
-software engineering program. The remainder of this second course is
-under the resposability of Cédric Tedeschi.
+computing course taugh at [ISTIC](https://istic.univ-rennes.fr/).
+This second course is given in collaboration with my colleague
+[Cédric Tedeschi](http://people.irisa.fr/Cedric.Tedeschi/index.html).
 
 ## Lectures on GPU programming
 
-Please find below the main line of lectures:
+Please find below the main lecture line:
 
 * Comparisons between CPU and GPU architectures
 * Something new we need to pay attention at:
@@ -26,9 +26,13 @@ Please find below the main line of lectures:
   - data transfer between CPU and GPU
   - thread identifiers
   - the kernel
-* An complete example in CUDA:
-  - [vector sum on GPU](./GPU/vectorsum.cu)
-* *To be continued* ...
+* Two complete examples in CUDA:
+  - the sum of two vectors
+  - the solution to a combinatorial problem
+* The misteries of shared memory
+
+Some of the codes proposed during the lectures can be found
+in [this page](./HPC/README.md).
 
 ## Links
 
