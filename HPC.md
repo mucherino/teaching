@@ -32,7 +32,7 @@ Please find below the main lecture line:
 * The misteries of shared memory
 
 Some of the codes proposed during the lectures can be found
-in [this page](./HPC/README.md).
+in [this page](./GPU/README.md).
 
 ## Links
 
