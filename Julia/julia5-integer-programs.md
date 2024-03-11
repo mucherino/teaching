@@ -20,8 +20,8 @@ coins I had, the 5 and 10 cents. I was so proud of myself. “This is a
 very good way to recycle my coins!”, I thought. But I was about to discover 
 something very bad...  
 
-"You cannot use more than 20 coins per transaction. Transation cancelled",
-the machine suddenly told me. **WHAT?** My entusiasm faded out... I had 
+"You cannot use more than 20 coins per transaction. Transaction canceled",
+the machine suddenly told me. **WHAT?** My enthusiasm faded out... I had 
 inserted no more than 5 euros worth of coins so far, while I had to pay 11.40 
 euros in total! And what was worst, is that the machine then started to spit 
 back all my coins, and, during that tragic moment, my mind was looking for a 
@@ -59,8 +59,8 @@ this model is supposed to find solutions.
 
 It is worth pointing out the need of using integer variables (instead of 
 real variables, like in the previous lessons), because I cannot accept 
-solutions where I'm adviced to insert a "part" of a coin and a "part" of 
-another. The coin is one small but indivisable piece of money, implying
+solutions where I'm advised to insert a "part" of a coin and a "part" of 
+another. The coin is one small but indivisible piece of money, implying
 to my variables the need to be constrained to hold only integers. 
 
 Finally, notice the use a different solver (w.r.t the one used in the

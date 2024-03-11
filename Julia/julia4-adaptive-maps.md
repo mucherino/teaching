@@ -10,10 +10,10 @@ currently going on.
 
 You're visiting Andalusia and exploring the beautiful city of Granada.
 Your GPS device tells you that the cathedral is a few meters away from your 
-current location, something like 200 metres away. Just follow the street, 
+current location, something like 200 meters away. Just follow the street, 
 turn right, and the cathedral is going to appear just in front of you.
 "Cool, let's go", you say to your friends. On your short way to the cathedral,
-another group of turists asks you for directions for the cathedral, and you 
+another group of tourists asks you for directions for the cathedral, and you 
 just repeat to them what you had just learned from your GPS device: "just turn
 right over there, and the cathedral will be in front of you". Your reply is
 so immediate that you miss to pay attention to the fact that there is a person 
@@ -23,7 +23,7 @@ important for somebody seating on a wheelchair: from the current location,
 it is necessary to climb a few steps in order to get access to the pavement 
 where the cathedral stands. This person (and hence for the entire group) would 
 have much more preferred to have a longer path to the cathedral, instead of 
-having to deal with this obstracle. "What about conceiving a map that
+having to deal with this obstacle. "What about conceiving a map that
 adapts to the mobility conditions of the user?", you would at this point
 propose.
 
@@ -31,10 +31,10 @@ A possible definition of the "adaptive map problem" is as follows.
 Given a standard geographic map, a subset of Points of Interest (POIs),
 and a set of non-Euclidean distances between such POIs, is there 
 any *map distortion* that may allow us to satisfy the available distances 
-between POIs? Below, we are going to consider only a subproblem of
+between POIs? Below, we are going to consider only a sub-problem of
 the more general problem: given an initial set of positions for the POIs
 in the two-dimensional space, we will try to relocate these POIs in such 
-a way to satisfy the available distances constraintes, as long as it 
+a way to satisfy the available distances constraints, as long as it 
 is possible. We refer to this sub-problem to as the *POI relocation* 
 problem.
 
@@ -82,6 +82,8 @@ represented in units of time, instead of standard Euclidean distances:
 	     7408 6807 5950 5222 3840 5083 4966 2415    0 2303;
 	     5387 4693 3837 3292 1727 3416 3903 1698 2303    0];
 
+### Conception of our model
+
 Our approach to the POI relocation problem is based on the two following 
 observations:
 
@@ -98,8 +100,8 @@ observations:
 
 Notice that the *linearization* of the Euclidean norm is not trivial,
 and it requires in general the inclusion of additional variables in
-the model. In our case, however, this substituion does not need any
-additional variables, because of the introduced constraintes on the
+the model. In our case, however, this substitution does not need any
+additional variables, because of the introduced constraints on the
 orientations.
 
 The linear program is provided in the file [admaps.jl](./admaps.jl).
@@ -108,6 +110,8 @@ distance constraints between POIs. No more details about the linear
 program are provided in this page: it is up to you to discover now
 it works. In the following, we'll only focus our attention on how to 
 use Julia to visualize the results by using the ```Plots``` package.
+
+### Visualizing the result
 
 After running the Julia script in the file [admaps.jl](./admaps.jl),
 we'll find the new coordinates for the POIs in the two vectors named
