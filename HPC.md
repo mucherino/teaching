@@ -34,6 +34,10 @@ Please find below the main lecture line:
 Some of the codes proposed during the lectures can be found
 in [this page](./GPU/README.md).
 
+## Exercises on GPU programming
+
+- [Computing $\ln(2)$ on GPU](./GPU/log2series.md)
+
 ## Links
 
 * [Back to main repository page](README.md)

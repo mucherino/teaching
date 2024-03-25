@@ -9,10 +9,10 @@
  * Execution on Nuvolos with a Tesla T4 GPU:
  *
  * Recursive algorithm for SSP with CUDA on GPU
- * nblocks = 1024, nthreads = 128
- * SSP size = 17, search space size = 131072
- * Recursive algorithm says that 4632 subsets correspond to the SSP target (time  0.0010430000257)
- * GPU parallel approach says that 4632 subsets correspond to the SSP target (time  0.0000450000007)
+ * nblocks = 2048, nthreads = 128
+ * SSP size = 18, search space size = 262144
+ * Recursive algorithm says that 6840 subsets correspond to the SSP target (time  0.0020079999231)
+ * GPU parallel approach says that 6840 subsets correspond to the SSP target (time  0.0009889999637)
  *
  * AM
  */
@@ -69,7 +69,7 @@ int main(int argc,char *argv[])
    size_t warp_size = 32;  // must be power of 2
    size_t warps_per_block = 4;  // idem
    size_t nthreads = warp_size*warps_per_block;
-   size_t nblocks = 1024;  // idem
+   size_t nblocks = 2048;  // idem
    size_t total_threads = nblocks*nthreads;
    size_t n = 0;
    int count,partial;
@@ -125,8 +125,6 @@ int main(int argc,char *argv[])
    startclock = clock();
    ssp_on_gpu<<<nblocks,nthreads>>>(n,set_gpu,sum_gpu);
    cudaDeviceSynchronize();
-   endclock = clock();
-   time = compute_time(startclock,endclock);
 
    // retrieving the computed sums
    cudaMemcpy(sum,sum_gpu,total_threads*sizeof(int),cudaMemcpyDeviceToHost);
@@ -139,6 +137,8 @@ int main(int argc,char *argv[])
    };
 
    // printing the result obtained with the help of the GPU
+   endclock = clock();
+   time = compute_time(startclock,endclock);
    printf("GPU parallel approach says that %d subsets correspond to the SSP target (time %16.13f)\n",count,time);
 
    // freing memory

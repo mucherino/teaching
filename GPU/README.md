@@ -67,6 +67,10 @@ ways:
 
 The code is in the file [vectorsum.cu](./vectorsum.cu).
 
+## Exercises
+
+- [Computing $\ln(2)$ on GPU](./log2series.md)
+
 ## Links
 
 * [Back to HPC course](../HPC.md)
