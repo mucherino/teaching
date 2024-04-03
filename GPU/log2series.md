@@ -3,15 +3,15 @@
 
 ## Computing $\ln(2)$
 
-The natural logarithm of 2 can be computed as:
+An approximation of the natural logarithm of 2 can be computed as:
 
 $$
 \ln(2) = \sum_{i=0}^{n-1} \frac{(-1)^i}{i+1} .
 $$
 
-In this assignment, we want to compute an approximation of this series 
-for a very large value of $n$. We are going to write our program in 
-CUDA, in order to exploit the power of a GPU device.
+In this assignment, we want to compute this approximation for a very 
+large value of $n$. To this purpose, we are going to write our program 
+in CUDA, in order to exploit the power of a GPU device.
 
 ## Getting started
 
@@ -25,7 +25,7 @@ For the first kernel, the one named ```log2series_GPUv1```, we wish to
 implement a very simple approach in GPU programming where a chunk of 
 consecutive terms of the series is assigned to each thread. The partial 
 sum that each thread computes is then stored in the appropriate element 
-of the array allocated on the GPU, and subsequently sent to the CPU. The 
+of the array allocated on the GPU, and subsequently "sent" to the CPU. The 
 final computation, i.e. the sum of all partial sums, is performed in the 
 CPU (this part of the code is provided).
 
@@ -55,14 +55,14 @@ You can launch the execution in the "traditional" way:
 
 Do you remark any improvements? What about the quality of the result? 
 
-## Improving the access to global memory
+## Improving the performances
 
 It is time now to write our second kernel, the one named ```log2series_GPUv2```.
 Pay particular attention to the operations that are executed in the first
 version of your kernel, and try to find a different way to associate terms
-to threads that reduces the total number of operations. When you'll be confident
-about your new kernel, then complete the part of the main function for its
-execution, compile and test it. Do you remark any changes?
+to threads so that the total number of operations is reduced. When you'll be 
+confident about your new kernel, complete the main function for its execution, 
+compile and test it. Do you remark any changes?
 
 ## Improving the quality of the results
 

@@ -48,10 +48,10 @@ The code is in the file [ssp.cu](./ssp.cu).
 
 ## Computing the sum of two vectors
 
-This program in CUDA is for performing a such simpler operation (in
-comparison with what proposed above): the sum of two vectors. But in 
-this CUDA program, we are going to pay attention to the way the 
-threads collect data from the global memory during the executions.
+This program in CUDA is for performing a very simple operation: the sum 
+of two $n$-dimensional vectors. This CUDA program is here proposed with 
+the aim of focusing our attention on how threads can collect data from the
+global memory during the executions.
 
 The program initially generates the two vectors (of given length $n$)
 and then it computes the sum of the two vectors in three different 
@@ -69,7 +69,7 @@ The code is in the file [vectorsum.cu](./vectorsum.cu).
 
 ## Exercises
 
-- [Computing $\ln(2)$ on GPU](./log2series.md)
+- [Computing the natural log of 2 on GPU](./log2series.md).
 
 ## Links
 

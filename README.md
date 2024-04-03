@@ -13,8 +13,9 @@ University of Rennes, Rennes, France.
 
 ## Exercises
 
-* [The Game of Life](./HPC/game/README.md).
-- [Computing $\ln(2)$ on GPU](./GPU/log2series.md)
+* [The Game of Life](./HPC/game/README.md);
+* [OpenMP for beginners](./HPC/OpenMPbeginners.c) (just compile, run, and follow the instructions);
+* [Computing the natural log of 2 on GPU](./GPU/log2series.md).
 
 ## Tables of content by course
 

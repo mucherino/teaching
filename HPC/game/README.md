@@ -2,11 +2,11 @@
 # Convey's Game of Life
 
 This page proposes some exercises on the famous *game of life* devised 
-by the British mathematician John Horton Conway (1937-2020) in 1970. A 
-simple sequential implementation in C programming language of the game 
-is available in the repository: [gamelife.c](./gamelife.c). The proposed 
-exercises have as a main aim to explore different possible ways to improve 
-the performances of the game in different programming languages and paradigms.
+by the British mathematician John Horton Conway (1937-2020). A simple 
+sequential implementation in C programming language of the game is available 
+in the repository: [gamelife.c](./gamelife.c). The proposed exercises have as 
+a main aim to explore different possible ways to improve the performances of 
+the game in different programming languages and paradigms.
 
 ## Introducing to the "game"
 
@@ -30,7 +30,7 @@ on it the main rules of the game. If you're interested in knowing more
 about the topic, the YouTube channel 
 [Numberphile](https://www.youtube.com/@numberphile)
 has devoted several videos to Convey and its game of life. This is 
-[one of these videos](https://www.youtube.com/watch?v=R9Plq-D1gEk).
+[one of the videos](https://www.youtube.com/watch?v=R9Plq-D1gEk).
 
 # A simple C version
 
@@ -75,10 +75,10 @@ remark that the computations for each row block cannot be performed in
 a completely independent way by the several processors, and therefore
 a communication step is necessary when stepping from one generation
 to another. The necessity to perform these communications implies that
-our parallel version is going to be more performing of the sequential one 
-only on very large toruses, but you can test in any case your new 
-implementation in MPI on small examples (such as the models provided
-in this folder).
+our parallel version has chances to be more performing of the sequential 
+one only if the torus is very large. However, during development, the
+provided models, even if small, can be very useful for verifying that 
+your code is actually working the way you wish.
 
 In order to make our "life" a little easier, we will suppose that the 
 total number of rows in the torus is divisible by the number of processors
@@ -87,7 +87,7 @@ of processors is a power of 2, because this will allow us to devise a
 simpler communication scheme. Finally, we will allocate memory for storing 
 the entire torus (and not only its row blocks) on the RAM associated to 
 every processor. In this way, it will be easy for each processor to predict 
-the row block borders for its neighbors.
+the row block borders of its neighbors.
 
 Your MPI implementation needs to execute the following main steps (tasks
 already implemented in the sequential version are not mentioned):
@@ -95,7 +95,7 @@ already implemented in the sequential version are not mentioned):
 - the MPI environment is initialized so that a dedicated process will run
   on each of the allocated processors;
 - the assumptions mentioned in the paragraph above are verified by each
-  process, and the execution is aborted should the verification fail;
+  process, and the execution is aborted if the verification fails;
 - all processes read the preselected text files containing the initial
   state for the torus;
 - process 0 prints the current state;
@@ -120,9 +120,9 @@ others only store the rows that they strictly need?
 
 ## More games!
 
-In case you'd write new text file containing some other interesting initial
-states for the torus, please don't hesitate to send them to your teacher, or 
-to add them to the repository via a "push request".
+In case you'd prepare new text files containing some other interesting models 
+(initial states for the torus), please don't hesitate to send them to your 
+teacher, or to directly add them to the repository via a "push request".
 
 ## Links
 
