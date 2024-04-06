@@ -36,7 +36,8 @@ in [this page](./GPU/README.md).
 
 ## Exercises on GPU programming
 
-- [Computing the natural log of 2 on GPU](./GPU/log2series.md).
+- [Computing the natural log of 2 on GPU](./GPU/log2series.md);
+- [Matrix transposition on GPU](./GPU/mattranspose.md).
 
 ## Links
 

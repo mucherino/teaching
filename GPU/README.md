@@ -69,7 +69,8 @@ The code is in the file [vectorsum.cu](./vectorsum.cu).
 
 ## Exercises
 
-- [Computing the natural log of 2 on GPU](./log2series.md).
+- [Computing the natural log of 2 on GPU](./log2series.md);
+- [Matrix transposition on GPU](./mattranspose.md).
 
 ## Links
 
