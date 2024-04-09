@@ -91,6 +91,10 @@ Please follow [this link](./Julia/README.md).
 
 Please follow [this link](./lowlevel/README.md).
 
+### Lectures on comparisons among programming languages
+
+Please follow [this link](./cmp/README.md).
+
 ### Lectures on project topics
 
 - [Introduction to Distance Geometry](https://www.antoniomucherino.it/download/slides/DistanceGeometryIntroSlides.pdf);
