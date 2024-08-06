@@ -14,6 +14,10 @@ University of Rennes, Rennes, France.
 
 ## Exercises
 
+### OOP
+
+* [Quaternions in Java](./OOP/README.md).
+
 ### HPC
 
 * [The Game of Life](./HPC/game/README.md);
