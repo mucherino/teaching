@@ -7,9 +7,9 @@ University of Rennes, Rennes, France.
 
 ## Lectures by topic
 
-* [Julia programming](./Julia/README.md);
-* [GPU programming](./GPU/README.md);
 * [Low-level programming](./lowlevel/README.md);
+* [GPU programming](./GPU/README.md);
+* [Julia programming](./Julia/README.md);
 * [Comparing programming languages](./cmp/README.md).
 
 ## Exercises

@@ -20,13 +20,13 @@ for long time to make his new algebra work only with the introduction
 of $j$, but unsuccessfully), a quaternion can be seen as a complex
 number to which two additional imaginary components, $j$ and $k$, 
 are added, such that:
-\begin{displaymath}
+$$
 i^2 = -1, \quad j^2 = -1, \quad k^2 = -1, \quad ijk = -1 . 
-\end{displaymath}
+$$
 The generic notation for a quaternion is:
-\begin{displaymath}
+$$
 (a + bi + cj + dk) ,
-\end{displaymath}
+$$
 where $a$, $b$, $c$ and $d$ are real numbers.
 
 More information about quaternions can be found on this
