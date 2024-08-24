@@ -14,7 +14,7 @@ $S$ such that the sum of the elements in the subset corresponds
 to the target $t$. In other words, if
 
 $$
-S = (s_1,s_2,\dots,s_n \right) ,
+S = (s_1,s_2,\dots,s_n) ,
 $$
 
 the problem asks to find a binary vector $x = (x_1,x_2,\dots,x_n)$ 
