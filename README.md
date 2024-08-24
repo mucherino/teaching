@@ -20,13 +20,16 @@ University of Rennes, Rennes, France.
 
 ### HPC
 
-* [The Game of Life](./HPC/game/README.md);
 * [OpenMP for beginners](./HPC/OpenMPbeginners.c) (just compile, run, and follow the instructions).
 
 ### GPU
 
 * [Computing the natural log of 2 on GPU](./GPU/log2series.md);
 * [Matrix transposition on GPU](./GPU/mattranspose.md).
+
+### The Game of life
+
+* [One exercise](./HPC/game/README.md) to practise your implementation skills in both MPI and CUDA!
 
 ## Tables of content by course
 

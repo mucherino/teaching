@@ -14,7 +14,7 @@ $S$ such that the sum of the elements in the subset corresponds
 to the target $t$. In other words, if
 
 $$
-S = \{ s_1,s_2,\dots,s_n \} ,
+S = \left\{ s_1,s_2,\dots,s_n \right\} ,
 $$
 
 the problem asks to find a binary vector $x = (x_1,x_2,\dots,x_n)$ 
@@ -44,11 +44,11 @@ For more information about the SSP, you can refer to this
 How to explore the entire solution set for a given SSP? 
 Take the elements of $S$ in the given order. Suppose that the
 first element, $s_1$, is not included in a solution. Then, solve
-another SSP instance where the original set of integers is 
-replaced by $S \setminus \{s_1\}$. However, we need to consider 
+another SSP instance where the original set of integers is replaced 
+by $S \setminus \left\{s_1\right\}$. However, we need to consider 
 also the possibility that $s_1$ is included in a solution. In
-this case, take note of the current partial sum, and again, 
-solve the SSP instance having $S \setminus \{s_1\}$ as set of 
+this case, take note of the current partial sum, and again, solve 
+the SSP instance having $S \setminus \left\{s_1\\right}$ as set of 
 integers. In general for an element $s_i$, we need to consider
 both possibilities, and to proceed to the element $s_{i+1}$ once
 the partial sum (stored in the variable ```partial``` in the code
@@ -210,7 +210,8 @@ The code is in the file [vectorsum.cu](./vectorsum.cu).
 ## Exercises
 
 - [Computing the natural log of 2 on GPU](./log2series.md);
-- [Matrix transposition on GPU](./mattranspose.md).
+- [Matrix transposition on GPU](./mattranspose.md);
+- [The game of life](../HPC/game/README.md).
 
 ## Links
 
