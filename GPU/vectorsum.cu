@@ -2,16 +2,10 @@
 /*
  * Vector Sum on GPU with CUDA
  *
- * execution on Nuvolos with GPU Tesla T4:
- *
- * Vector sum with CUDA
- * nblocks = 64, nthreads = 128, nchunk = 100000
- * hence vector size is 819200000
- * Computing the vector sum on CPU ...  done: elapsed time =  2.3357; verification: 3 + 3 = 6 
- * Computing the vector sum on GPU (non-coalesced) ...  done: elapsed time =  0.1816; verification: 8 + 0 = 8 
- * Computing the vector sum on GPU (coalesced) ...  done: elapsed time =  0.0820; verification: 7 + 9 = 16 
- *
- * last update: February 11th, 2024
+ * Comparing 3 versions:
+ * - sequential
+ * - on GPU with contigous chunks
+ * - on GPU with coalesced memory access
  *
  * AM
  */

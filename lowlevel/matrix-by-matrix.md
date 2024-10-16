@@ -54,39 +54,43 @@ The key to understand why the order of the operations is important can
 be found in the particular way memory caching works. Modern CPUs are in
 fact equipped with many cache memories, at different levels, where data 
 transferred from the main memory (RAM) are stored before being finally 
-trasferred to the core registers. This particular architecture takes
+transferred to the core registers. This particular architecture takes
 advantage of the fact that, in general, when an algorithm has used a 
 given piece of data, then it is likely to use a piece of data that 
-*lies in memory very close to the one used before*. 
+*is stored in memory very close to the one used before*. 
 
-This seems to be the case for our simple algorithm for matrix multiplications.
-However, the cache memories are relatively small (the larger they are, the 
-slower they become), and hence, when the size of our squared matrices
-becomes too large, they cannot fit anymore into the cache. As a consequence, 
-pieces of the three involved matrices need to be loaded back and forth from 
-and to the main memory. This data transfer is the cause of an important 
-reduction on the performances of the algorithm. **How many seconds out the 
-40 seconds reported above are therefore spent by transferring data?** 
-Try to guess!
+![The schematic representation of the CPU](./CPU.png)
+
+At first sight, this might seem to be always the case for our simple 
+algorithm for matrix multiplications, i.e.~one may think that the three
+involved matrices may permanently stay in the cache memories. It is
+important to point out, however, that these memories are relatively 
+small (in fact, the larger they are, the slower they become), and hence, 
+when the size of our squared matrices becomes too large, they cannot fit 
+anymore into the cache memories. As a consequence, parts of the three 
+matrices need to be loaded back and forth from and to the main memory. 
+This data transfer is the cause of an important reduction on the 
+performances of the algorithm. **How many seconds out the 40 seconds 
+reported above are therefore spent by transferring data?** Try to guess!
 
 ## Block algorithm
 
-This is an implementation of the "block" algorithm that, instead of 
-performing the computations in the classical order for performing a
-matrix-by-matrix multiplication, it uses a different order that allows 
-the matrix elements to remain for longer time in the cache memory. This
-way, the data transfers between main memory and cache memory are 
-reduced. 
+This is an implementation of the "block" algorithm for performing a
+matrix-by-vector multiplication. Basically, this algorithm changes the
+order of the operations for ensuring that, once a vector or matrix
+element is loaded into the cache memory, it is used in as many operations
+as possible, before being replaced by other data. This way, the data 
+transfers between main memory and cache memory are reduced. 
 
 We suppose that:
 
 	assert(N%NBLOCKS == 0UL);
 
-so that:
+so that this division:
 
 	size_t L = N/NBLOCKS;
 
-is an integer number. Please study the C function below in order to 
+gives an integer number. Please study the C function below in order to 
 deduce the basic idea behind the block algorithm:
 
 	void mbm_blocks(size_t nblocks,double **A,double **B,double **C,size_t L,double **blockA,double **blockB,double **blockC)
@@ -111,7 +115,11 @@ deduce the basic idea behind the block algorithm:
 	   };
 	};
 
-Moreover, please try to answer to the following questions:
+You can also make reference to the figure below:
+
+![Block algorithm scheme](./Blocks.png).
+
+Finally, please try to answer to the following questions:
 
 - Can we say that the block algorithm uses twice the basic algorithm for
   matrix-by-matrix multiplication? One time for the blocks, and another
@@ -120,30 +128,15 @@ Moreover, please try to answer to the following questions:
   ```blockB``` and ```blockC``` ? Do these array contain copies of the 
   matrix elements?
 
-By the way, the implementation of the block algorithm takes only 29 seconds 
-for performing the same multiplication! This implies that the time we
-saved by avoiding useless memory transfers is more than 10 seconds: this is
-about 25% of the total time of the basic algorithm!
+By the way, the implementation of the block algorithm 
+**takes only 29 seconds for performing the same multiplication!** 
+This implies that the time we saved by avoiding useless memory transfers 
+is more than 10 seconds: this is about 25% of the total time of the basic 
+algorithm!
 
 This [C file](./matrix-by-matrix.c) contains the functions reported above,
 together with other auxiliary functions and the main function. Don't 
 hesitate to download it and to perform some tests on your machine!
-
-## Using more than one single core
-
-If more than one core is available to perform our computations, then
-the different block-by-block multiplications may be performed by
-independent threads assigned to the various cores. Naturally, it is
-important to make sure that there is no more than one thread per time
-working on each block of ```C```, in order to avoid memory collisions
-among the threads.
-
-Some additional questions:
-
-- In this new setup, is the use of cache memory still optimal?  
-  Recall that more than one level of caching is implemented in our CPUs.
-- Same question but now suppose that the number of involved computing
-  units (eg, the cores of your CPU) is illimited.
 
 ## Links
 

@@ -32,11 +32,5 @@ University of Rennes, Rennes, France.
 
 * [One exercise](./HPC/game/README.md) to practise your implementation skills in both MPI and CUDA!
 
-## Tables of content by course
-
-The given information still makes reference to last year.
-It will updated soon.
-
-* [High Performance Computing](./HPC.md);
-* [Advanced programming](./Advanced.md).
+--------------------
 
