@@ -7,31 +7,37 @@ concept of *coalesced memory access*. A secondary aim is to show
 how to define a 2-dimensional topological grid of threads on our GPU.
 
 Before beginning with this lecture, it is important that you are 
-familiar with the lecture about 
-[cache memory optimization](../lowlevel/matrix-by-matrix.md).
+familiar with the lecture, available on this same repository, about 
+[cache memory access optimization](../lowlevel/matrix-by-matrix.md).
 
 ## One element per thread
 
-The block algorithm presented in the [previous lecture](../lowlevel/matrix-by-matrix.md)
-"converges back" to the standard algorithm for matrix-by-matrix when 
-we can allocate as many computing resources as the number of elements 
-forming the resulting matrix ```C```. On GPU, this setup gives us the 
-advantage of keeping only the inner loop of the sequential algorithm, 
-while the other two are implicitly ensured by the grid topology:
+The block algorithm presented in the other lecture, mentioned in the
+previous paragraph, "converges back" to the standard algorithm for 
+matrix-by-matrix when we can allocate as many computing resources as 
+the number of elements forming the resulting matrix ```C```. On GPU, 
+this setup gives us the possibility to reuse the standard algorithm
+for high performing computations, where the two outer for loops are 
+implicitly "implemented" by the GPU grid topology, so that only
+the inner for loop will have to be executed by each thread. This
+allows us to reduce the actual algorithm complexity from $n^3$ to $n$.
+
+The drawing below shows the memory locations that every thread needs
+to access in order to perform the computations:
 
 ![Thread working charge](./matrices.png)
 
-One important point is given by the way the matrix elements are 
-loaded during the execution of this algorithm over the grid.
-Before analyzing this point, however, let's read the main operations
-in the CUDA program [matrix-by-matrix.cu](./matrix-by-matrix.cu).
+One important point for the GPU implementation is given by the way 
+these matrix elements are loaded from the GPU global memory. But
+before analyzing this point in details, let's go over the main 
+operations in our CUDA program [matrix-by-matrix.cu](./matrix-by-matrix.cu).
 
 ## Matrix representation
 
-In order to simplify the transfer of the matrices from and to the 
-GPU global memory, we use 1-dimensional arrays to represent 
-2-dimensional objects. It will be necessary therefore to often convert 
-the standard 2D indices $(i,j)$ for the matrix elements into a unique 
+In order to simplify the transfer of the involved matrices from and to
+the GPU global memory, we use 1-dimensional arrays to represent
+2-dimensional objects. It will be necessary therefore to often convert
+the standard 2D indices $(i,j)$ for the matrix elements into a unique
 $k$ index related to the 1-dimensional array:
 
 	__host__ __device__ size_t index(size_t i,size_t j,size_t n)
@@ -41,14 +47,14 @@ $k$ index related to the 1-dimensional array:
 
 Notice that this function is meant to be invoked by both CPU and GPU.
 
-We also suppose that all matrices involved in the computations are
-*squared matrices*.
+For simplicity, we also suppose that all matrices involved in the 
+computations are *squared matrices*.
 
 ## Thread grid topology
 
 In our example, the size of the grid representing the topology of the
 GPU threads is supposed to perfectly match with the value of ```n```, which
-corresponds to the number of row and columns of our squared matrices.
+corresponds to the number of rows and columns in our squared matrices.
 
 In the code, these details are set up at the beginning of the main function:
 
@@ -59,7 +65,15 @@ In the code, these details are set up at the beginning of the main function:
 Recall that ```nthreads``` is the number of threads in each block allocated
 on the GPU. This value cannot be too large, because otherwise we can risk to
 allocate more threads in the same GPU block than the actual number of
-physical threads.
+physical threads. This is naturally impossible. Notice however that GPUs are 
+normally able to deal with this kind of situations, but at the cost of 
+lowering the overall performances.
+
+This drawing shows how the threads are organized in the grid topology, but
+with an example where ```nblocks``` and ```nthreads``` are both set to 3
+to enhance visualization:
+
+![Thread organization in grid](./matrices_threads_topo1.png)
 
 ## Data transfer
 
@@ -86,8 +100,8 @@ matrix representation:
 	size_t idy = (blockIdx.y*blockDim.y) + threadIdx.y;
 	size_t ind = index(idx,idy,n);
 
-Notice the necessity to know the row size, which can be easily obtained
-from the configuration of the grid topology.
+Notice the necessity to know the row size ```n```, which can be easily 
+obtained from the configuration of the grid topology.
 
 ## A kernel to set up all elements to zero
 
@@ -148,8 +162,9 @@ This is the output of the execution:
 	Transferring the result to the RAM ... done in 7.8e-05 seconds
 	Verifying the results ... done in 0.00035 seconds, results are OK
 
-The GPU version is **3 orders of magnitude** faster than the sequential version!
-If we rather use the block algorithm explained in [this lecture](../lowlevel/matrix-by-matrix.md),
+The GPU version is **almost 3 orders of magnitude** faster than the sequential 
+version! If we rather use the block algorithm explained in 
+[this lecture](../lowlevel/matrix-by-matrix.md),
 we can reduce the computational cost of the sequential algorithm up to 25% of
 the current cost, but the GPU will still be the "winner".
 
@@ -183,20 +198,63 @@ are contiguous, then the retrieval can be performed in one unique step. When thi
 is not the case, more than one memory transfer from the global memory is actually
 necessary, making the overall operation slower.
 
-This "second level" of contiguity in CUDA programming is known under the name
-of **coalesced memory access**.
+This "second level" of contiguity in CUDA programming is known under the name of 
+**coalesced memory access**.
 
-## Computing the sum of two vectors
+This drawing summarizes the previous two paragraphs in a graphical way (and using,
+again, the smaller topology employed above for the other drawing, where we can
+confuse blocks with warps):
 
-In order to show the benefits of having a coalesced memory access on an easier
-example, we consider another CUDA program which performs the sum of two 
-$n$-dimensional vectors. The full code is in the file [vectorsum.cu](./vectorsum.cu).
+![Memory access per warp](./matrices_threads_topo1_warps.png)
 
-This CUDA program initially generates the two vectors (of given length $n$) and 
-then it computes the sum of the two vectors in three different ways:
+The memory access to the elements of ```A``` is contiguous, but at the very 
+first step, when the first element of each row is retrieved, the access is not
+coalesced. This implies that, in the worst case scenario, the warp will have
+to communicate with the global memory as many times as the number of its
+working threads. The access to the elements of ```B``` is instead always
+coalesced!
+
+# Can we do better?
+
+It looks like the standard algorithm for matrix-by-matrix is more adapted to
+the use on GPU than its use on CPU. In fact, while the elements of ```A``` 
+are still accessed in a contiguous way, the elements of ```B```, for which
+we can define their access as *catastrophic* on CPU, are on the GPU accessed
+in a coalesced manner. There is only one drawback: the very first access
+to the first element of each row of ```A``` is not coalesced, and it is
+not contiguous either.
+
+What about changing the two-dimensional grid topology to improve the 
+memory access?
+
+![Thread organization in grid](./matrices_threads_topo2_warps.png)
+
+In our CUDA code, if we change the topology so that the blocks are organized
+in a $256 \times 4$ grid, and the threads in each block are organized in
+a $1 \tines 64$ grid, then our code becomes 3 times faster!
+
+	Matrix-by-Matrix on GPU with CUDA
+	Two-dimensional thread grid structure: [blocks (256,4), threads (1,64)]
+	Memory allocation on RAM ... done in 8e-06 seconds
+	Setting up to zero all elements of C matrix on RAM ... done in 0.000137 seconds
+	Random generation of matrices A and B ... done in 0.00205 seconds
+	Sequential version ... done in 0.105837 seconds
+	Memory allocation on GPU ... done in 0.181113 seconds
+	Setting up to zero all elements of C matrix on GPU ... done in 5.1e-05 seconds
+	Transferring A and B to the global memory ... done in 8.7e-05 seconds
+	CUDA version of matrix-by-matrix ... done in 0.000148 seconds
+	Transferring the result to the RAM ... done in 6.1e-05 seconds
+	Verifying the results ... done in 0.000267 seconds, results are OK
+
+## An exercise on a simpler CUDA program
+
+We consider now the problem of summing up two $n$-dimensional vectors. The CUDA 
+code is provided in the file [vectorsum.cu](./vectorsum.cu). It initially generates 
+the two vectors (of given length $n$) and then it computes the sum of the two vectors 
+in three different ways:
 
 1. it performs the computations in sequential on one core of the CPU;
-2. it performs the computations on GPU, without paying any attention 
+2. it performs the computations on GPU, without paying any special attention 
    to the way the vector elements are accessed by the threads on the GPU;
 3. it performs the computations on GPU by making sure that the access to 
    the vector elements is *coalesced*.
@@ -209,6 +267,9 @@ This is the result of an execution on the same GPU used above:
 	Computing the vector sum on CPU ...  done: elapsed time =  2.3357; verification: 3 + 3 = 6 
 	Computing the vector sum on GPU (non-coalesced) ...  done: elapsed time =  0.1816; verification: 8 + 0 = 8 
 	Computing the vector sum on GPU (coalesced) ...  done: elapsed time =  0.0820; verification: 7 + 9 = 16 
+
+Can you explain why the version of the kernel based on coalesced memory access
+is faster?
 
 ## Links
 

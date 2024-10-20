@@ -26,7 +26,7 @@ implement a very simple approach in GPU programming where a chunk of
 consecutive terms of the series is assigned to each thread. The partial 
 sum that each thread computes is then stored in the appropriate element 
 of the array allocated on the GPU, and subsequently "sent" to the CPU. The 
-final computation, i.e. the sum of all partial sums, is performed in the 
+final computation, i.e. the sum of all partial sums, is performed by the 
 CPU (this part of the code is provided).
 
 ## Preparing the main
@@ -60,18 +60,18 @@ Do you remark any improvements? What about the quality of the result?
 It is time now to write our second kernel, the one named ```log2series_GPUv2```.
 Pay particular attention to the operations that are executed in the first
 version of your kernel, and try to find a different way to associate terms
-to threads so that the total number of operations is reduced. When you'll be 
-confident about your new kernel, complete the main function for its execution, 
-compile and test it. Do you remark any changes?
+to threads in such a way to reduce the total number of required operations. 
+When you'll be confident about your new kernel, complete the main function 
+for its execution, compile and test it. Do you remark any changes?
 
 ## Improving the quality of the results
 
-Take now your previous kernel, copy its code inside the third kernel, but then 
-modify it so that each thread can compute the partial sums by taking into 
-consideration the smallest terms at first (the ones where the denominator ```i+1``` 
-is larger), and then iterating in the "direction" of larger terms. Complete 
-everything necessary in the main function to run this third kernel. Then compile, 
-execute, and observe the results.
+Take now your previous kernel, copy its code inside the third kernel, and then 
+modify it so that each thread computes the partial sums by taking into consideration 
+the smallest terms at first (i.e. the ones where the denominator ```i+1``` is 
+larger), and iterating in the "direction" of larger terms. Complete everything 
+necessary in the main function to run this third kernel. Then compile, execute, 
+and observe the results.
 
 ## Links
 

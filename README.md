@@ -1,8 +1,8 @@
 
 # AM's Teaching repository
 
-This repository collects some lecture notes and exercises (with
-code snippets) for the main courses I'm currently teaching at 
+This repository collects some lecture notes (with code snippets) 
+and exercises for the main courses I'm currently teaching at 
 University of Rennes, Rennes, France.
 
 ## Lectures by topic
