@@ -52,6 +52,5 @@ These are some of the topics covered in the next lessons.
 
 ## Links
 
-* [Back to Advanced Programming course](../Advanced.md)
 * [Back to main repository page](../README.md)
 

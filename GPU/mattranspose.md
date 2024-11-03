@@ -100,6 +100,5 @@ storage capabilities.
 ## Links
 
 * [Back to GPU programming](./README.md)
-* [Back to HPC course](../HPC.md)
 * [Back to main repository page](../README.md)
 
