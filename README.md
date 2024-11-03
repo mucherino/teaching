@@ -16,7 +16,8 @@ University of Rennes, Rennes, France.
 
 ### OOP
 
-* [Quaternions in Java](./OOP/README.md).
+* [Quaternions in Java](./OOP/Quaternions.md);
+* [The Node: first step to design collections](./OOP/TheNode.md).
 
 ### HPC
 

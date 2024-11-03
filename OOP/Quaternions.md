@@ -20,13 +20,17 @@ for long time to make his new algebra work only with the introduction
 of $j$, but unsuccessfully), a quaternion can be seen as a complex
 number to which two additional imaginary components, $j$ and $k$, 
 are added, such that:
+
 $$
 i^2 = -1, \quad j^2 = -1, \quad k^2 = -1, \quad ijk = -1 . 
 $$
+
 The generic notation for a quaternion is:
+
 $$
 (a + bi + cj + dk) ,
 $$
+
 where $a$, $b$, $c$ and $d$ are real numbers.
 
 More information about quaternions can be found on this
@@ -47,14 +51,29 @@ the three following constructors:
 - a constructor for a *real* quaternion: this is a quaternion without
   imaginary parts.
 
-Remember the possibility to use implemented constructors for writing 
-a new one.
+Remember the possibility to invoke previously implemented constructors 
+for defining new ones.
+
+## Getters and setters
+
+Since we want our Quaternion objects to be immutable, we are not 
+supposed to have *setters* in our class. However, we can consider writing 
+the following three *getters*:
+
+- ```getReal```, which returns the real part of the Quaternion instance;
+- ```getImaginary```, in two versions. When the method takes no arguments,
+  then it returns an array of ```double[]``` containing the three imaginary
+  components. When the method takes an index in argument, instead, it is
+  supposed to return the imaginary component having that index. We suppose
+  that the imaginary components are counted from 0 to 2, and that an
+  exception is raised when the index given in argument is out of this 
+  predefined range.
 
 ## Checking properties of Quaternion instances
 
 Our constructors are able to create new quaternions having a given
 property. Moreover, quaternions having specific properties may also 
-be generated while performing calculations on quaternions. For this 
+be generated while performing calculations with quaternions. For this 
 reason, it is important to include in our Java class the following 
 three methods:
 
@@ -125,7 +144,7 @@ some additional tests you may consider to include in your main method:
   multiplied by the original quaternion, actually gives the real quaternion
   with $a = 1$ (with a given tolerance for round-off errors);
 - even if the multiplication of quaternions is not commutative, this property
-  should still hold when multiplying a quaternion by its reciprocal;
+  should actually hold when multiplying a quaternion by its reciprocal;
 - the non-commutativity can be verified by multiplying two random quaternions
   in the two possible orders.
 
@@ -147,5 +166,15 @@ In order to complete our Java class, we could override the two standard methods
 You can verify if the input ```Object``` instance is one of our quaternions 
 with ```instanceof```.
 
--------------------
+Moreover, you may want to study the possibility to write a new class, 
+inheriting from ```Quaternion```, and implementing a ```PureQuaternion```.
+What are the methods already written for ```Quaternion``` that you may
+need to override? Finally, consider the possibility to have the method
+```equals``` of ```PureQuaternion``` capable to compare instances of 
+the new subclass with both instances of ```Quaternion``` and 
+```PureQuaternion```.
+
+## Links
+
+* [Back to main repository page](../README.md)
 
