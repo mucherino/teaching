@@ -1,12 +1,14 @@
 
-/* Agent2 class
+/* Agent2 (extending Thread)
  *
  * AirSimulation exercise on multi-threading
  *
  * AM
  */
 
-public class Agent2 implements Agent
+import java.util.NoSuchElementException;
+
+public class Agent2 extends Thread
 {
    // reference to the Aircraft
    private Aircraft aircraft;
@@ -14,25 +16,39 @@ public class Agent2 implements Agent
    // Agent2 constructor
    public Agent2(Aircraft aircraft)
    {
+      super();
       this.aircraft = aircraft;
    }
 
-   // everytime it is invoked, it creates and places one Customer
-   public void run()
+   @Override
+   // everytime it is invoked, it selects and moves one Customer
+   public void run() throws NoSuchElementException
    {
       if (this.aircraft.isFull())  return;
-      Aircraft.SeatIterator seatIt = this.aircraft.iterator();
-      try
-      {
-         while (seatIt.next() != null);
-      }
-      catch (Exception e)
-      {
-         return;  // nothing done
-      }
 
-      Customer c = new Customer();
-      if (!c.needsAssistence() || !seatIt.isNearEmergencyExit())  seatIt.place(c);
+      // looking for the Clustomer with higher frequency number
+      Aircraft.SeatIterator seatIt = this.aircraft.iterator();
+      Customer highest = null;
+      while (seatIt.hasNext())
+      {
+         Customer current = seatIt.next();
+         if (highest == null || (current != null && current.getFlyerLevel() > highest.getFlyerLevel()))
+            highest = current;
+      }
+      if (highest == null)  return;
+
+      // placing the "highest" Customer at the first seat
+      seatIt = this.aircraft.iterator();
+      Customer current = seatIt.extractNext();
+      seatIt.placeAsNext(highest);
+      seatIt.next();
+      while (current != highest)
+      {
+         Customer next = seatIt.extractNext();
+         seatIt.placeAsNext(current);
+         seatIt.next();
+         current = next;
+      }
    }
 }
 

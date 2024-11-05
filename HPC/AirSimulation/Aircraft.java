@@ -34,7 +34,7 @@ public class Aircraft implements Iterable<Customer>
       // aisles
       for (int i = 0; i < n; i++)  this.seatMap[i][4] = new Aisle();
 
-      // counting the number of free seats (destinated to Customers)
+      // counting the number of free seats (devoted to Customers)
       this.nfree = 0;
       for (int i = 0; i < n; i++)
       {
@@ -58,82 +58,73 @@ public class Aircraft implements Iterable<Customer>
       return new SeatIterator(this);
    }
 
-   // internal SeatIterator class
-   // -> it only iterates over Customers
-   // -> it throws a NoSuchElementException to indicate that it's over
+   // internal SeatIterator class (it only iterates over Customers, and free seats)
    public class SeatIterator implements Iterator<Customer>
    {
       private int i;  // row index
       private int j;  // column index
       private Aircraft aircraft;  // reference to the Aircraft
 
-      // constructor
-      public SeatIterator(Aircraft aircraft)
+      // constructor for the seat iterator
+      public SeatIterator(Aircraft aircraft) throws IllegalStateException
       {
          super();
          this.aircraft = aircraft;
+         Seat[][] map = this.aircraft.seatMap;
          this.i = 0;
-         this.j = -1;
-      }
-
-      // did we start with the iterations?
-      private boolean isCurrentDefined()
-      {
-         try
+         this.j = 0;
+         while (map[this.i][this.j] != null && !(map[this.i][this.j] instanceof Customer))
          {
-            if (this.j == -1) throw new IllegalStateException("Use method 'next' in order to select the first Custormer seat");
+            this.j++;
+            if (this.j == seatMap[0].length)
+            {
+               this.i++;
+               if (this.i == seatMap.length) throw new IllegalStateException(); // no Customers on which iterating!
+               this.j = 0;
+            }
          }
-         catch (Exception e)
-         {
-            e.printStackTrace();
-            System.exit(1);
-         }
-
-         return true;
       }
 
       @Override
       public boolean hasNext()
       {
-         try
-         {
-            throw new Exception("We won't use this method");
-         }
-         catch (Exception e)
-         {
-            e.printStackTrace();
-            System.exit(1);
-         }
-
-         return false;
+         return this.i < this.aircraft.seatMap.length;
       }
 
       @Override
       public Customer next() throws NoSuchElementException
       {
-         this.j++;
-         if (this.j == this.aircraft.seatMap[0].length)
-         {
-            this.i++;
-            if (this.i == this.aircraft.seatMap.length) throw new NoSuchElementException();
-            this.j = 0;
-         }
-         if (this.aircraft.seatMap[i][j] == null)  return null;
-         if (this.aircraft.seatMap[i][j] instanceof Customer)  return (Customer) this.aircraft.seatMap[i][j];
-         return this.next();  // we skip windows and aisles
+         if (!this.hasNext()) throw new NoSuchElementException();
+         Seat[][] map = this.aircraft.seatMap;
+         Customer TheNext = null;
+         if (map[this.i][this.j] != null)  TheNext = (Customer) map[this.i][this.j];
+
+         // looking already for the next to TheNext
+	 do {
+            this.j++;
+            if (this.j == map[0].length)
+            {
+               this.i++;
+               if (this.i == map.length)  return TheNext; // no more Customers after TheNext!
+               this.j = 0;
+            }
+	 }  while (map[this.i][this.j] != null && !(map[this.i][this.j] instanceof Customer));
+
+         // returning TheNext
+	 return TheNext;
       }
 
-      // is the current seat free?
-      public boolean isFree()
+      // is the next seat free?
+      public boolean isNextFree() throws NoSuchElementException
       {
-         if (this.isCurrentDefined())  return this.aircraft.seatMap[this.i][this.j] == null;
-         return false;
+         if (!this.hasNext()) throw new NoSuchElementException();
+         return this.aircraft.seatMap[this.i][this.j] == null;
       }
 
-      // is the current seat near an emergency exit?
-      public boolean isNearEmergencyExit()
+      // is the next seat near an emergency exit?
+      public boolean isNextNearEmergencyExit() throws NoSuchElementException
       {
-         if (!this.isCurrentDefined())  return false;
+         if (!this.hasNext()) throw new NoSuchElementException();
 
          // looking at the left-side
          if (this.j > 0)
@@ -161,13 +152,12 @@ public class Aircraft implements Iterable<Customer>
          return false;
       }
 
-      // placing a Customer in the current position
-      public void place(Customer c)
+      // placing a Customer in the next free location
+      public void placeAsNext(Customer c) throws NoSuchElementException
       {
-         if (!this.isCurrentDefined())  return;
+         if (!this.hasNext()) throw new NoSuchElementException();
          try
          {
-            if (c == null) throw new IllegalArgumentException("In order to free seats, use instead the method 'seatFree'");
             if (this.aircraft.seatMap[this.i][this.j] != null) throw new IllegalStateException("The seat is not free!");
          }
          catch (Exception e)
@@ -180,10 +170,10 @@ public class Aircraft implements Iterable<Customer>
          this.aircraft.nfree--;
       }
 
-      // removing a Customer from the current position
-      public void remove()
+      // removing a Customer from the next position
+      public void removeNext() throws NoSuchElementException
       {
-         if (!this.isCurrentDefined())  return;
+         if (!this.hasNext()) throw new NoSuchElementException();
          try
          {
             if (this.aircraft.seatMap[this.i][this.j] == null) throw new IllegalStateException("The current seat is already empty!");
@@ -196,6 +186,18 @@ public class Aircraft implements Iterable<Customer>
 
          this.aircraft.seatMap[this.i][this.j] = null;
          this.aircraft.nfree++;
+      }
+
+      // extracting a Customer from the next position
+      public Customer extractNext() throws NoSuchElementException
+      {
+         if (!this.hasNext()) throw new NoSuchElementException();
+         Customer extracted = null;
+         Seat[][] map = this.aircraft.seatMap;
+         if (map[this.i][this.j] != null)  extracted = (Customer) map[this.i][this.j];
+         map[this.i][this.j] = null;
+         this.aircraft.nfree++;
+         return extracted;
       }
    }
 

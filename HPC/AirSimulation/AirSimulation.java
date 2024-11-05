@@ -11,16 +11,14 @@ public class AirSimulation
    public static void main(String[] args)
    {
       Aircraft aircraft = new Aircraft();
-      Agent agent1 = new Agent1(aircraft);
-      Agent agent2 = new Agent2(aircraft);
-      //Agent agent3 = new Agent3(aircraft);
-      //Agent agent4 = new Agent4(aircraft);
+      Agent1 ag1 = new Agent1(aircraft);
+      Agent2 ag2 = new Agent2(aircraft);
+      //Agent3 ag3 = new Agent3(aircraft);
       while (!aircraft.isFull())
       {
-         agent1.run();
-         agent2.run();
-         //agent3.run();
-         //agent4.run();
+         ag1.run();
+         ag2.run();
+         //ag3.run();
          System.out.println(aircraft);
          System.out.println(aircraft.cleanString());
       }

@@ -34,7 +34,7 @@ public class Window implements Seat
    public String type()
    {
       return this.type;
-   };
+   }
 
    @Override
    public String symbol()
@@ -49,7 +49,7 @@ public class Window implements Seat
       String print = this.type;
       if (this.emergencyExit)  print = print + " (emergency exit)";
       return print;
-   };
+   }
 
    // main (simple testing)
    public static void main (String [] args)

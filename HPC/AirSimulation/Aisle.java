@@ -20,7 +20,7 @@ public class Aisle implements Seat
    public String type()
    {
       return this.type;
-   };
+   }
 
    @Override
    public String symbol()
@@ -32,7 +32,7 @@ public class Aisle implements Seat
    public String toString()
    {
       return this.type;
-   };
+   }
 
    // main (simple testing)
    public static void main (String [] args)
