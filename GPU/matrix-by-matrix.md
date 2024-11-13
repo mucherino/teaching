@@ -12,8 +12,8 @@ familiar with the lecture, available on this same repository, about
 
 ## One element per thread
 
-The block algorithm presented in the other lecture, mentioned in the
-previous paragraph, "converges back" to the standard algorithm for 
+The block algorithm presented in the lecture about cache access
+optimization "converges back" to the standard algorithm for 
 matrix-by-matrix when we can allocate as many computing resources as 
 the number of elements forming the resulting matrix ```C```. On GPU, 
 this setup gives us the possibility to reuse the standard algorithm
@@ -45,7 +45,8 @@ $k$ index related to the 1-dimensional array:
 	   return i*n + j;
 	};
 
-Notice that this function is meant to be invoked by both CPU and GPU.
+Notice that this function is meant to be invoked by both CPU and GPU
+devices.
 
 For simplicity, we also suppose that all matrices involved in the 
 computations are *squared matrices*.
@@ -56,7 +57,8 @@ In our example, the size of the grid representing the topology of the
 GPU threads is supposed to perfectly match with the value of ```n```, which
 corresponds to the number of rows and columns in our squared matrices.
 
-In the code, these details are set up at the beginning of the main function:
+In the code, the details about the grid topology and the matrix size are 
+set up at the top of the main function:
 
 	size_t nblocks = 32;   // nblocks^2 = 1024
 	size_t nthreads = 8;  // nthreads^2 = 64
@@ -65,13 +67,13 @@ In the code, these details are set up at the beginning of the main function:
 Recall that ```nthreads``` is the number of threads in each block allocated
 on the GPU. This value cannot be too large, because otherwise we can risk to
 allocate more threads in the same GPU block than the actual number of
-physical threads. This is naturally impossible. Notice however that GPUs are 
-normally able to deal with this kind of situations, but at the cost of 
-lowering the overall performances.
+physical threads. This is naturally impossible. Notice however that CUDA is
+actually able to automatically deal with this kind of situations, but at the 
+cost of lowering the overall performances.
 
-This drawing shows how the threads are organized in the grid topology, but
-with an example where ```nblocks``` and ```nthreads``` are both set to 3
-to enhance visualization:
+This drawing shows how the threads are organized in the grid topology, in a
+reduced example where ```nblocks``` and ```nthreads``` are both set to 3
+to improve the visualization:
 
 ![Thread organization in grid](./matrices_threads_topo1.png)
 
@@ -174,14 +176,14 @@ it is necessary to take the allocation into consideration when evaluating the
 performances. In our specific example, we can say that it would not make sense 
 to run *only one matrix-by-matrix* multiplication on the GPU, but if we have several
 multiplications to execute, then it will be necessary to run only one memory 
-allocation step to perform them all.
+allocation step before performing them all.
 
 ## But what about the memory access?
 
 We can make two main remarks.
 
 Firstly, the concepts introduced in [this lecture](../lowlevel/matrix-by-matrix.md)
-about cache memory access optimization are still true when working with GPUs.
+about cache memory access optimization are still valid when working with GPUs.
 In our example, the access to the memory is performed through contiguous locations 
 when the elements of the matrix ```A``` are accessed. But we cannot say the same for
 the elements of ```B```, because a column of the matrix ```B``` needs to be selected
@@ -214,15 +216,15 @@ to communicate with the global memory as many times as the number of its
 working threads. The access to the elements of ```B``` is instead always
 coalesced!
 
-# Can we do better?
+## Can we do better?
 
-It looks like the standard algorithm for matrix-by-matrix is more adapted to
-the use on GPU than its use on CPU. In fact, while the elements of ```A``` 
-are still accessed in a contiguous way, the elements of ```B```, for which
-we can define their access as *catastrophic* on CPU, are on the GPU accessed
-in a coalesced manner. There is only one drawback: the very first access
-to the first element of each row of ```A``` is not coalesced, and it is
-not contiguous either.
+It looks like the standard algorithm for matrix-by-matrix is better fits
+the structure of a GPU, rather than the CPU architecture. In fact, while the 
+elements of ```A``` are accessed in a contiguous way, the elements of ```B```, 
+for which we can define their access as *catastrophic* on CPU, are accessed
+in a coalesced manner on the GPU. There is only one drawback: the very first 
+access to the first element of each row of ```A``` is not coalesced on GPU, 
+and it is not contiguous either.
 
 What about changing the two-dimensional grid topology to improve the 
 memory access?
@@ -231,7 +233,7 @@ memory access?
 
 In our CUDA code, if we change the topology so that the blocks are organized
 in a $256 \times 4$ grid, and the threads in each block are organized in
-a $1 \tines 64$ grid, then our code becomes 3 times faster!
+a $1 \times 64$ grid, then our code becomes 3 times faster!
 
 	Matrix-by-Matrix on GPU with CUDA
 	Two-dimensional thread grid structure: [blocks (256,4), threads (1,64)]
@@ -246,7 +248,7 @@ a $1 \tines 64$ grid, then our code becomes 3 times faster!
 	Transferring the result to the RAM ... done in 6.1e-05 seconds
 	Verifying the results ... done in 0.000267 seconds, results are OK
 
-## An exercise on a simpler CUDA program
+## A little exercise on a simpler CUDA program
 
 We consider now the problem of summing up two $n$-dimensional vectors. The CUDA 
 code is provided in the file [vectorsum.cu](./vectorsum.cu). It initially generates 
@@ -273,6 +275,7 @@ is faster?
 
 ## Links
 
+* [Next: shared memory](./shared-matrix.md)
 * [Back to HPC lectures](./README.md)
 * [Back to main repository page](../README.md)
 
