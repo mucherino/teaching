@@ -9,7 +9,8 @@ block. Recall, moreover, that blocks of GPU devices are formed by a
 certain number of *warps*. Therefore, it is important to remark that
 some groups of threads sharing this common memory are perfectly 
 synchronized (because they have a common controler), but this 
-synchronization does not apply to all threads in the block.
+synchronization does not apply to threads of the block that belong
+to different warps.
 
 The shared memory is designed in such a way to ensure a very fast access
 to the data it holds. We are going to study an example where the use
@@ -21,14 +22,14 @@ Given a real number $p$ and two matrices $A$ and $B$, this
 [CUDA code](./shared-matrix.cu) computes the following matrix:
 
 $$
-   C = (A \times B) \times (A \times B) \times \dots \times (A \times B) ,
+   C = (A \times B) + (A \times B) + \dots + (A \times B) ,
 $$
 
 where the resulting matrix $A \times B$ is multiplied by itself $p$ times.
-Of course, this calculation can be trivially simplied:
+Of course, this calculation can be trivially simplified:
 
 $$
-   C = p \times A \times B .
+   C = p \cdot (A \times B) .
 $$
 
 However, we are not going to exploit this simplication, because we wish to
@@ -37,24 +38,26 @@ $A$ and $B$ can actually vary in each matrix multiplication. In the code,
 $A$ and $B$ are randomly generated at the beginning, and used in every
 multiplication. You can change the code and have two new matrices generated
 for each new multiplication, but this will not have any impact on the
-observed performances (we won't count, of course, the increased complexity 
-for the generation of the new matrices). 
+observed performances (we won't count, of course, the additional complexity 
+for the generation of the new matrices).
 
 The [CUDA code](./shared-matrix.cu) compares two kernels in charge of 
-performing the matrix operation. The first kernel does not use the
-shared memory, while the second actually exploits it for enhancing
-the performances. In this page, we are going to focus only on the latter.
+performing the operations on the matrices. The first kernel does not use 
+the shared memory, while the second actually exploits it for enhancing
+the performances. In this page, we are going to focus our attention only 
+on the latter.
 
-Notice that the code is based on similar assumptions (matrix size, assignment 
-of matrix elements to threads), and it has a similar structure of the 
-one presented in the [previous lecture](./matrix-by-matrix.md). 
+Notice that the code has a similar structure, and it satisfies assumptions 
+(matrix size, assignment of matrix elements to threads) similar to those
+in the code presented in the [previous lecture](./matrix-by-matrix.md). 
 
 ## Allocating shared memory at block level
 
 Shared memory can only be allocated at run time (differently from what we
 have learned about the global memory). There are two possible approaches
 for performing this allocation. When the size of the memory is constant
-for all executions, the static approach is recommended:
+for all executions, the static approach is recommended. We can for example
+write:
 
 	__shared__ float shared_mem[128];
 
@@ -84,8 +87,8 @@ identifiers!), and the initialization to zero for each of these elements:
 	shared_mem[myelement] = 0.0f;
 
 Since only the threads belonging to the same warp are perfectly synchronized, 
-it is necessary to enforce the synchronization of the entire block, for
-ensuring data consistency:
+it is necessary to enforce the synchronization of the entire block before 
+continuing with the computations, in order to ensure data consistency:
 
 	__syncthreads();
 
@@ -106,9 +109,9 @@ code, this is implemented in the following function:
 
 ## Twice faster
 
-The same operations, but performed by making a partial use of the shared memory
-(the matrices $A$ and $B$ did not move from the global memory). allow us to reduce 
-by a half the execution time on GPU:
+By partially exploiting the use of the shared memory (the matrices $A$ and $B$ 
+are still directly accessed from the global memory), we are able to reduce by 
+a half the execution time on GPU:
 
 	p*(Matrix-by-Matrix) on GPU with CUDA
 	Comparing versions : sequential, CUDA w/out shared memory, and CUDA with shared memory
@@ -123,12 +126,12 @@ by a half the execution time on GPU:
 
 Have you ever heard of *banked* memories? Well, if you are following this lecture 
 because it is part of your course program, then your teacher will explain this to 
-you. Otherwise, a web search should give you enough information.
+you. Otherwise, there is a lot of material on the web!
 
-Once the concept of banked memory is clear to you, can you imagine an upgraded
+Once the concept of banked memory is clear to you, you may imagine an upgraded
 version of our CUDA code where sub-matrices (and not single elements) are assigned 
-to each thread? In this case, how to define these sub-matrices in order to ensure a 
-quick access to the shared memory?
+to each thread. But in this case, how to define these sub-matrices in order to 
+ensure a quick access to the shared memory?
 
 ## Links
 

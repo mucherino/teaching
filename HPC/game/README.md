@@ -53,7 +53,7 @@ but it will also become useful later on when we will work on some parallel
 implementations of the game. In order to convert 2-dimensional indices $(x,y)$
 into a unique 1-dimensional index $z$, the following function is provided:
 
-	size_t torus_index(size_t n,size_t m,size_t x,size_t y,int dx,int dy)
+	size_t torus_index(size_t n,size_t m,size_t x,size_t y,int dx,int dy);
 
 Notice also the presence of a C function capable to create random initial 
 states for the torus, as well as of another which can read predefined models 
@@ -155,23 +155,25 @@ topology needs for this reason to be two-dimensional, so that each thread
 actually has two indices, which correspond in our case to the indices of
 the cells in our torus. 
 
-In order to start working on this CUDA implementation, please answer to 
-the following questions:
-
-- Which C functions in the [sequential version](./gamelife.c) can directly
-  be (meaning: without any change) reused on the GPU? If you find any of such
-  functions, don't forget to mark it with the proper label (e.g. ```___device___```).
-
 In order to make our "life" easier, we will not try to transfer the data
-type ```torus_t``` to the GPU global memory, but rather its array of Boolean's,
-where the torus is actually stored. Suppose that the prototype for our kernel is:
+type ```torus_t``` to the GPU global memory, but rather its array of booleans,
+where the torus cells are actually stored. Suppose therefore that the prototype 
+of our kernel is:
 
-	__global__ void torus_on_gpu(bool *torus1,bool *torus2);
+        __global__ void torus_on_gpu(bool *torus1,bool *torus2);
 
-- How to find out in the kernel how many rows and columns our torus has?
+The following questions are meant to guide you through the development of
+your CUDA version of the game of life. 
 
-We can remark that some operations performed by the C functions in the sequential 
-version will have to be rewritten in the kernel.
+- The given prototype for the kernel does not have arguments indicating the
+  torus topology: how to find out then how many rows and columns our torus has?
+
+- Is there any C function in the [sequential version](./gamelife.c) that we 
+  can reuse on the GPU? If you find some, don't forget to mark these functions
+  with the label ```___device___```.
+
+We can remark, however, that some operations performed by the C functions in 
+the sequential version will have to be rewritten in our new kernel.
 
 - Should we pay a particular attention on how these operations are re-implemented?
   Would it be important to avoid code divergence as much as possible?
@@ -182,14 +184,14 @@ Finally, a question about the synchronization of the threads.
 
 Please follow the main lines below for your CUDA implementation:
 
-- Verify the specifications of your GPU and manually set up a grid 
-  that will correspond to the shape of your torus.
+- Manually set up a 2D grid formed by $16 \times 16$ blocks, each formed by 
+  $8 \times 8$ threads.
 - Use the C function for a random generation of the torus in order to
-  create a torus which exactly fits with your grid.
+  create a torus which exactly fits with your GPU grid.
 - Run the game of life in sequential on the random torus for a predetermined
   number of generations.
-- Print the obtained torus: you will use this torus to verify that your
-  CUDA implementation is correct.
+- Print the obtained torus: you will use the obtained result to verify that 
+  your CUDA implementation is correct.
 - Transfer the original random torus on the GPU global memory.
 - Invoke the kernel.
 - Retrieve the obtained torus from the global memory.
@@ -202,7 +204,7 @@ Please follow the main lines below for your CUDA implementation:
 
 In case you'd write new text files containing some other interesting models 
 (initial states for the torus), please don't hesitate to send them to your 
-teacher, or to directly add them to the repository via a "push request".
+teacher, or to directly add them to this repository via a "push request".
 
 ## Links
 

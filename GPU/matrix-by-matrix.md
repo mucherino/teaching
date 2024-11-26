@@ -4,7 +4,7 @@
 We are going to study a CUDA code for performing the multiplication
 of two matrices. The main aim of this lecture is to introduce the 
 concept of *coalesced memory access*. A secondary aim is to show
-how to define a 2-dimensional topological grid of threads on our GPU.
+how to define a 2-dimensional topological grid of threads on our GPUs.
 
 Before beginning with this lecture, it is important that you are 
 familiar with the lecture, available on this same repository, about 
@@ -18,9 +18,9 @@ matrix-by-matrix when we can allocate as many computing resources as
 the number of elements forming the resulting matrix ```C```. On GPU, 
 this setup gives us the possibility to reuse the standard algorithm
 for high performing computations, where the two outer for loops are 
-implicitly "implemented" by the GPU grid topology, so that only
-the inner for loop will have to be executed by each thread. This
-allows us to reduce the actual algorithm complexity from $n^3$ to $n$.
+implicitly "implemented" by the GPU grid topology. Basically, only
+the inner for loop will have to be executed by each thread, by giving
+us the possibility to reduce the actual complexity from $n^3$ to $n$.
 
 The drawing below shows the memory locations that every thread needs
 to access in order to perform the computations:
@@ -71,9 +71,9 @@ physical threads. This is naturally impossible. Notice however that CUDA is
 actually able to automatically deal with this kind of situations, but at the 
 cost of lowering the overall performances.
 
-This drawing shows how the threads are organized in the grid topology, in a
-reduced example where ```nblocks``` and ```nthreads``` are both set to 3
-to improve the visualization:
+The drawing below shows how the threads are organized in the grid topology, 
+in a reduced example where ```nblocks``` and ```nthreads``` are both set 
+to 3 for a clearer visualization:
 
 ![Thread organization in grid](./matrices_threads_topo1.png)
 
@@ -171,12 +171,13 @@ we can reduce the computational cost of the sequential algorithm up to 25% of
 the current cost, but the GPU will still be the "winner".
 
 Give a look however at the time necessary to allocate memory on the GPU global
-memory. When a lot of memory is required on the GPU (like in our example),
-it is necessary to take the allocation into consideration when evaluating the 
-performances. In our specific example, we can say that it would not make sense 
-to run *only one matrix-by-matrix* multiplication on the GPU, but if we have several
-multiplications to execute, then it will be necessary to run only one memory 
-allocation step before performing them all.
+memory. When a consistent amount of memory is required on the GPU, it is necessary 
+to take the allocation time into consideration when evaluating the overall 
+performances. In our specific example, we can say that it would not make sense to 
+run *only one matrix-by-matrix* multiplication on the GPU. If we have several
+multiplications to execute, however, then the memory allocation step can be 
+executed only once and the same memory locations can be reused to perform all
+the multiplications.
 
 ## But what about the memory access?
 
@@ -203,31 +204,29 @@ necessary, making the overall operation slower.
 This "second level" of contiguity in CUDA programming is known under the name of 
 **coalesced memory access**.
 
-This drawing summarizes the previous two paragraphs in a graphical way (and using,
-again, the smaller topology employed above for the other drawing, where we can
-confuse blocks with warps):
+The drawing below summarizes the previous two paragraphs in a graphical way (and 
+using, again, the smaller topology employed for the previous drawing; this
+topology is so small that we can confuse blocks with warps):
 
 ![Memory access per warp](./matrices_threads_topo1_warps.png)
 
 The memory access to the elements of ```A``` is contiguous, but at the very 
 first step, when the first element of each row is retrieved, the access is not
-coalesced. This implies that, in the worst case scenario, the warp will have
-to communicate with the global memory as many times as the number of its
-working threads. The access to the elements of ```B``` is instead always
-coalesced!
+always coalesced. This implies that the warp may have to perform several 
+communication steps with the global memory. The access to the elements of 
+```B```, instead, is always coalesced.
 
 ## Can we do better?
 
-It looks like the standard algorithm for matrix-by-matrix is better fits
-the structure of a GPU, rather than the CPU architecture. In fact, while the 
+It looks like the standard algorithm for matrix-by-matrix better fits with
+the structure of a GPU, rather than with CPU architectures. In fact, while the 
 elements of ```A``` are accessed in a contiguous way, the elements of ```B```, 
 for which we can define their access as *catastrophic* on CPU, are accessed
 in a coalesced manner on the GPU. There is only one drawback: the very first 
-access to the first element of each row of ```A``` is not coalesced on GPU, 
-and it is not contiguous either.
+access to the first element of each row of ```A``` is not coalesced on GPU.
 
-What about changing the two-dimensional grid topology to improve the 
-memory access?
+What about changing the two-dimensional grid topology in an attempt to improve 
+the memory access?
 
 ![Thread organization in grid](./matrices_threads_topo2_warps.png)
 
@@ -258,7 +257,7 @@ in three different ways:
 1. it performs the computations in sequential on one core of the CPU;
 2. it performs the computations on GPU, without paying any special attention 
    to the way the vector elements are accessed by the threads on the GPU;
-3. it performs the computations on GPU by making sure that the access to 
+3. it performs the computations on GPU by making it sure that the access to 
    the vector elements is *coalesced*.
 
 This is the result of an execution on the same GPU used above:

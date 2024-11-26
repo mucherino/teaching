@@ -12,7 +12,7 @@ This second course is given in collaboration with my colleague
 
 - [Lecture 1](./intro_ssp.md) : An introduction through an example;
 - [Lecture 2](./matrix-by-matrix.md) : 2D grids and coalesced memory access;
-* [Lecture 3](./shared-matrix.md) : Shared memory.
+- [Lecture 3](./shared-matrix.md) : Shared memory.
 
 ## Exercises
 
