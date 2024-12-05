@@ -135,6 +135,7 @@ ensure a quick access to the shared memory?
 
 ## Links
 
+* [Next: CUDA streams](./sierpinski.md)
 * [Back to HPC lectures](./README.md)
 * [Back to main repository page](../README.md)
 
