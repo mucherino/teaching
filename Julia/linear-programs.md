@@ -205,6 +205,6 @@ of this linear program can be found in the file [diet.jl](./diet.jl).
 
 ## Links
 
-* [Next: adaptive maps](./julia4-adaptive-maps.md)
+* [Next: adaptive maps](./adaptive-maps.md)
 * [Summary](./README.md)
 

@@ -40,7 +40,7 @@ Therefore, we can define the following system of equations, where $t_1$, $t_2$ a
 parameters, and where $x$ and $y$ are the unknowns (the variables):
 
 $$
-\left\{
+\left{
 \begin{array}{l}
 t_1 (x - y) = d , \\
 t_2 (x + y) = d . \\
@@ -116,6 +116,6 @@ define and solve linear systems.
 
 ## Links
 
-* [Next: linear programs](./julia3-linear-programs.md)
+* [Next: linear programs](./linear-programs.md)
 * [Summary](./README.md)
 

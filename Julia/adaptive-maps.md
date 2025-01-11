@@ -175,6 +175,6 @@ please read (or watch) the provided additional material!
 
 ## Links
 
-* [Next: integer linear programs](./julia5-integer-programs.md)
+* [Next: integer linear programs](./integer-programs.md)
 * [Summary](./README.md)
 
