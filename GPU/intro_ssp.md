@@ -2,9 +2,9 @@
 # Introduction to GPU programming
 
 We introduce GPU programming in CUDA (with the C programming
-language) through an example. The problem considered below is
-one of the easiest to understand but it belongs to the category
-of the hardest problems to solve.
+language) through an example. The combinatorial problem considered 
+in this lecture is one of the easiest to understand but it belongs to 
+the category of the hardest problems to solve.
 
 ## The Subset Sum Problem (SSP)
 
@@ -33,10 +33,11 @@ to solve the SSP efficiently. These algorithms exploit some particular
 properties that SSP instances may satisfy, and they are generally able 
 to provide *only one* solution to the problem, i.e., only one subset 
 of $S$ whose elements sum up to the target $t$. Instead, our approach 
-is going to be different: our interest is in enumerating the entire 
-solution set for a given SSP instance. In other words, we want to 
-identify **all** the subsets that correspond to the given target. 
-For more information about the SSP, you can refer to this 
+is going to be different: our interest is in counting the total number 
+of solutions for a given SSP instance. In other words, we want to 
+count how many subsets of the original $S$ will have elements whose sum 
+corresponds to the given target $t$. For more information about the SSP, 
+you can refer to this 
 [wikipedia page](https://en.wikipedia.org/wiki/Subset_sum_problem).
 
 ## The basic recursive algorithm
@@ -82,12 +83,10 @@ to the GPU structure. Instead of running our program on a single
 core of a CPU, we are going to have, on our GPU, several threads
 running simultaneously and in cooperation for solving a given SSP
 instance. Since the number of parallel threads can importantly
-grow when using more recent GPUs, we can consider to assign *each
-sum to compute* to a single thread. Although we are going to
-perform exactly the same operations, there won't be any recursive
-calls in our CUDA implementation.
+grow when using more modern GPUs, we can consider to assign *each
+sum to compute* to a single thread. 
 
-The function that is supposed to run on the GPU is named *kernel*,
+The function that is supposed to run on the GPU is named **kernel**,
 and this is how it looks like for our specific problem:
 
 	__global__ void ssp_on_gpu(size_t n,unsigned long *set_gpu,unsigned long *sum_gpu)
@@ -102,6 +101,8 @@ and this is how it looks like for our specific problem:
 	   };
 	   sum_gpu[copy] = sum;
 	};
+
+You can notice that there are no recursive calls in this CUDA implementation.
 
 If you're new with CUDA programming, there are several details
 you need to know to fully understand this code. If you're one of
@@ -166,7 +167,7 @@ otherwise the CPU won't be able to have access to them.
 ### Launching the kernel
 
 From the main C function (running on CPU), it's the following line 
-of code that will launch the kernel:
+of code that launches the kernel:
 
 	ssp_on_gpu<<<nblocks,nthreads>>>(n,set_gpu,sum_gpu);
 
@@ -184,7 +185,7 @@ to verify that every thread has actually finished its computations:
 
 ## Links
 
-* [Next: matrix-by-matrix in CUDA](./matrix-by-matrix.md)
+* [Next: GPU programming overview](./vectorsum.md)
 * [Back to HPC lectures](./README.md)
 * [Back to main repository page](../README.md)
 

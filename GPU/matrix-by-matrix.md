@@ -2,8 +2,8 @@
 # Matrix-by-matrix on GPU
 
 We are going to study a CUDA code for performing the multiplication
-of two matrices. The main aim of this lecture is to introduce the 
-concept of *coalesced memory access*. A secondary aim is to show
+of two matrices. The main aim of this lecture is to give a more detailed
+explanation of *coalesced memory access*. A secondary aim is to show
 how to define a 2-dimensional topological grid of threads on our GPUs.
 
 Before beginning with this lecture, it is important that you are 
@@ -246,31 +246,6 @@ a $1 \times 64$ grid, then our code becomes 3 times faster!
 	CUDA version of matrix-by-matrix ... done in 0.000148 seconds
 	Transferring the result to the RAM ... done in 6.1e-05 seconds
 	Verifying the results ... done in 0.000267 seconds, results are OK
-
-## A little exercise on a simpler CUDA program
-
-We consider now the problem of summing up two $n$-dimensional vectors. The CUDA 
-code is provided in the file [vectorsum.cu](./vectorsum.cu). It initially generates 
-the two vectors (of given length $n$) and then it computes the sum of the two vectors 
-in three different ways:
-
-1. it performs the computations in sequential on one core of the CPU;
-2. it performs the computations on GPU, without paying any special attention 
-   to the way the vector elements are accessed by the threads on the GPU;
-3. it performs the computations on GPU by making it sure that the access to 
-   the vector elements is *coalesced*.
-
-This is the result of an execution on the same GPU used above:
-
-	Vector sum with CUDA
-	nblocks = 64, nthreads = 128, nchunk = 100000
-	hence vector size is 819200000
-	Computing the vector sum on CPU ...  done: elapsed time =  2.3357; verification: 3 + 3 = 6 
-	Computing the vector sum on GPU (non-coalesced) ...  done: elapsed time =  0.1816; verification: 8 + 0 = 8 
-	Computing the vector sum on GPU (coalesced) ...  done: elapsed time =  0.0820; verification: 7 + 9 = 16 
-
-Can you explain why the version of the kernel based on coalesced memory access
-is faster?
 
 ## Links
 

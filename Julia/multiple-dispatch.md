@@ -216,7 +216,7 @@ which do not support multiple-dispatch?
 
 ## For a deeper understanding of multiple-dispatch
 
-Please refer to this [lecture](./cmp/README.md).
+Please refer to this [lecture](../cmp/README.md).
 
 ## Links
 

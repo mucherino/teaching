@@ -80,8 +80,8 @@ Let's add create another structure now:
 	 "PA"
 	 "PPAR"
 
-Notice that the standard type for an *ordered list* in Julia is a ```Vector```,
-the same vector type that we have seen in our previous lecture. 
+Notice that the standard type for a *list* in Julia is a ```Vector```, the same 
+vector type that we have seen in our previous lecture. 
 
 For every new introduced structure, we can therefore write *functions* using
 the information in, or acting on, the instances of the new structure. For example,

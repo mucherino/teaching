@@ -5,11 +5,10 @@ This repository collects some lecture notes (with code snippets)
 and exercises for the main courses I'm currently teaching at 
 University of Rennes, Rennes, France.
 
-The material for new lectures is generally added to the repository
-a few days before the lectures take place. It is often the case that
-typos (or even more important mistakes) are discovered during the
-lectures (by myself, or by my students): these are then corrected
-in subsequently commits on the repository.
+New lecture materials are typically uploaded to the repository a few 
+days in advance. During lectures, typos or more serious errors may be 
+discovered (by myself or students). These are usually corrected in 
+subsequent repository commits.
 
 ## Lectures by topic
 
@@ -41,8 +40,8 @@ in subsequently commits on the repository.
 
 ## Last updates
 
-* reorganization of Julia course, data structures and multiple-dispatch;
-* lecture on GPU streams and the Sierpinski fractal.
+* lecture 2 of GPU programming course;
+* reorganization of Julia course, data structures and multiple-dispatch.
 
 --------------------
 

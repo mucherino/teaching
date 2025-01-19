@@ -1,5 +1,5 @@
 
-# Computing mathematical series on GPU
+# Exercise: computing mathematical series on GPU
 
 ## Computing $\ln(2)$
 
@@ -43,16 +43,7 @@ Once these three steps implemented, you can comment out the rest of the code
 (except the final calls to ```free``` and ```return```). This way, you'll be 
 able to test your first kernel on GPU before implementing the subsequent tasks.
 
-## Compiling and executing
-
-In order to compile your CUDA code, you need to use the command:
-
-	nvcc -o series log2series.cu
-
-You can launch the execution in the "traditional" way:
-
-	./series
-
+Please compile your program with the ```nvcc``` compiler, and execute it.
 Do you remark any improvements? What about the quality of the result? 
 
 ## Improving the performances
