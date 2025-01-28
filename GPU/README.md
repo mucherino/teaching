@@ -11,7 +11,7 @@ This second course is given in collaboration with my colleague
 ## Lectures on GPU programming in CUDA
 
 - [Lecture 1](./intro_ssp.md) : An introduction through an example (the Subset-Sum Problem);
-- [Lecture 2](./vectorsum.md) : A GPU programming overview (simple operations on vectors);
+- [Lecture 2](./vectorsum.md) : A GPU programming overview (Simple operations on vectors);
 - [Lecture 3](./matrix-by-matrix.md) : 2D grids and coalesced memory access (Matrix by matrix multiplications);
 - [Lecture 4](./shared-matrix.md) : Shared memory (Performing several operations on matrices);
 - [Lecture 5](./sierpinski.md) : CUDA streams (Sierpinski fractal).
