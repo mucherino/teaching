@@ -8,7 +8,7 @@ abstract type Person end
 
 # property for all instances of Person
 function has_name(person::Person)
-    hasproperty(person,:name)
+   hasproperty(person,:name)
 end
 
 # Kid
@@ -58,7 +58,7 @@ end
 
 # Kids only use GamingConsole structures
 function work(kid::Kid,console::GamingConsole)
-   print(kid.name," is playing with a ",typeof(console))
+   print(kid.name," is playing with a Gaming Console")
 end
 
 # Teachers use Computer devices for teaching
