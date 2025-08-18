@@ -8,7 +8,7 @@ the category of the hardest problems to solve.
 
 ## The Subset Sum Problem (SSP)
 
-Given a set of $n$ positive integers $S$ and a target $t$, the 
+Given a set $S$ of $n$ positive integers and a target $t$, the 
 Subset Sum Problem (SSP) asks whether there exists a subset of 
 $S$ such that the sum of the elements in the subset corresponds 
 to the target $t$. In other words, if

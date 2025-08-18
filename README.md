@@ -26,7 +26,13 @@ subsequent repository commits.
 
 ### HPC
 
-* [AirSimulation in Java multithreading](./HPC/AirSimulation/README.md);
+#### Java multithreading
+
+* [MultiAgentSSP](./HPC/MultiAgentSSP.md): several agents acting in parallel for the solution of a combinatorial problem!
+* [AirSimulation](./HPC/AirSimulation/README.md): parallel agents in charge to reserve plane seats.
+
+#### OpenMP
+
 * [OpenMP for beginners](./HPC/OpenMPbeginners.c) (just compile, run, and follow the instructions).
 
 ### GPU
