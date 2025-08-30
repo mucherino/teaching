@@ -22,7 +22,8 @@ subsequent repository commits.
 ### OOP
 
 * [Quaternions in Java](./OOP/Quaternions.md);
-* [The Node: first step to design collections](./OOP/TheNode.md).
+* [The Node: first step to design collections](./OOP/TheNode.md);
+* [MU-puzzle and linked lists](./OOP/MU-puzzle.md).
 
 ### HPC
 
@@ -46,8 +47,10 @@ subsequent repository commits.
 
 ## Last updates
 
-* lecture 2 of GPU programming course;
-* reorganization of Julia course, data structures and multiple-dispatch.
+Two new exercises:
+
+* the MU-puzzle;
+* the MultiAgent SSP solver.
 
 --------------------
 
