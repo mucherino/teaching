@@ -4,10 +4,10 @@
 This exercise has as main aim of employing the object-oriented 
 paradigm for implementing a Java class modeling the behavior of
 *quaternions*. The exercise is conceived in such a way to give the
-student the possibility to revise her knowledge in object-oriented
-programming before beginning to study data structures such as lists,
-maps, etc. In fact, quaternions can be seen as small collections 
-consisting of 4 real numbers.
+student the possibility to revise previously acquired knowledge in 
+object-oriented programming before beginning to study data structures 
+such as lists, sets, maps, etc. In fact, quaternions can be seen as 
+very small collections consisting of 4 real numbers.
 
 A little like complex numbers can extend the real numbers by 
 introducing the imaginary unit $i$ (such that $i^2 = -1$) and 
@@ -38,57 +38,55 @@ More information about quaternions can be found on this
 
 ## Definition of the Quaternion class
 
-Very first task in our exercise is to model our Quaternion class
-by paying particular attention to the encapsulation principle. 
-Moreover, we want all our Quaternion instances to be immutable. 
-Please begin writing some initial code for this class, as well as 
-the three following constructors:
+Very first task in our exercise is to model our ```Quaternion``` class
+by paying particular attention to the encapsulation principle. Moreover, 
+we want all our ```Quaternion``` instances to be immutable. Please begin 
+writing the basic code for beginning the development of this class. Also,
+please write the following three constructors:
 
 - a generic constructor, taking four real numbers $a$, $b$, $c$ and $d$
-  in input, and capable of creating the corresponding Quaternion instance;
+  in input, and capable of creating the corresponding quaternion instance;
 - a constructor for a *pure* quaternion: this is a quaternion without 
   real part;
 - a constructor for a *real* quaternion: this is a quaternion without
   imaginary parts.
 
 Remember the possibility to invoke previously implemented constructors 
-for defining new ones.
+when writing new ones.
 
 ## Getters and setters
 
-Since we want our Quaternion objects to be immutable, we are not 
+Since we want our ```Quaternion``` objects to be immutable, we are not 
 supposed to have *setters* in our class. However, we can consider writing 
 the following three *getters*:
 
 - ```getReal```, which returns the real part of the Quaternion instance;
 - ```getImaginary```, in two versions. When the method takes no arguments,
-  then it returns an array of ```double[]``` containing the three imaginary
-  components. When the method takes an index in argument, instead, it is
+  then it returns an array of type ```double[]``` containing the three imaginary
+  components. When the method does take an index in argument, instead, it is
   supposed to return the imaginary component having that index. We suppose
   that the imaginary components are counted from 0 to 2, and that an
   exception is raised when the index given in argument is out of this 
   predefined range.
 
-## Checking properties of Quaternion instances
+## Checking quaternion properties
 
-Our constructors are able to create new quaternions having a given
-property. Moreover, quaternions having specific properties may also 
-be generated while performing calculations with quaternions. For this 
-reason, it is important to include in our Java class the following 
-three methods:
+Our constructors are able to create different kinds of quaternions.
+Moreover, quaternions having specific properties may also be generated
+while performing operations on quaternions. For this reason, it is 
+important to include in our Java class the following three methods:
 
-- ```isZero```, verifying whether the Quaternion instance has all its 
-  elements set to 0:
-- ```isPure```, verifying whether the Quaternion instance is pure or not;
-- ```isReal```, verifying whether the Quaternion instance is real or not.
+- ```isZero```, verifying whether our quaternion has all its elements set to 0:
+- ```isPure```, verifying whether our quaternion is pure or not;
+- ```isReal```, verifying whether our quaternion is real or not.
 
 Please pay attention to the fact that round-off errors are likely 
 to affect the values of $a$, $b$, $c$ and $d$ during the calculations.
 
 ## toString
 
-In order to visualize our Quaternion instances, we override the
-standard ```toString``` method. We want exactly the same format
+In order to visualize our ```Quaternion``` instances, we override 
+the standard ```toString``` method. We want exactly the same format
 as indicated below with these two examples:
 
 	(1.0 + 2.0i + 3.0j + 4.0k)
@@ -97,17 +95,17 @@ as indicated below with these two examples:
 ## The main method
 
 At this point, we are already able to construct instances of our
-Quaternion class, and we are also able to print the details 
+```Quaternion``` class, and we are also able to print the details 
 related to these instances on the screen. We can therefore begin
-writing the ```main``` method to perform some basic tests. Then,
-it is recommended that, for each new method we will include in
-the class, we immediately write some new tests in this same 
-main method to verify its correctness.
+writing the ```main``` method to perform some basic tests. Later
+on, for each new method we will include in the class, it is 
+recommended to immediately add additional tests in the ```main``` 
+to verify their correctness.
 
 ## Special quaternions
 
-We want now to write methods for generating, for a given Quaternion
-instance ```Q```, the following three special quaternions:
+We want now to write methods for generating, for a given quaternion
+```Q```, the following three special quaternions:
 
 - the *conjugate* of ```Q```. Above, when giving the examples for
   the ```toString``` method, the two shown quaternions are one the
@@ -132,13 +130,14 @@ operations on quaternions:
 - the product of a scalar by a quaternion;
 - the product of two quaternions.
 
-Recall that our Quaternion instances are supposed to be immutable.
+Keep in mind that instances of our ```Quaternion``` class are supposed 
+to be immutable.
 
 ## Final testing
 
 If you followed the suggestion given below, you should have already 
-implemented some basic tests for all the developed methods. These are 
-some additional tests you may consider to include in your main method:
+implemented some basic tests for all the developed methods. Below, please 
+find some additional tests you may consider to include in your ```main```:
 
 - it should be verified that the reciprocal of a quaternion ```Q```, when 
   multiplied by the original quaternion, actually gives the real quaternion
@@ -165,14 +164,6 @@ In order to complete our Java class, we could override the two standard methods
 
 You can verify if the input ```Object``` instance is one of our quaternions 
 with ```instanceof```.
-
-Moreover, you may want to study the possibility to write a new class, 
-inheriting from ```Quaternion```, and implementing a ```PureQuaternion```.
-What are the methods already written for ```Quaternion``` that you may
-need to override? Finally, consider the possibility to have the method
-```equals``` of ```PureQuaternion``` capable to compare instances of 
-the new subclass with both instances of ```Quaternion``` and 
-```PureQuaternion```.
 
 ## Links
 

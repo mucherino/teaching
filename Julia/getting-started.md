@@ -131,5 +131,6 @@ problems.
 ## Links
 
 * [Next: Structures and functions](./structs-and-funs.md)
-* [Summary](./README.md)
+* [Back to Julia lectures](./README.md)
+* [Back to main repository page](../README.md)
 

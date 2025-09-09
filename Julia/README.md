@@ -21,16 +21,11 @@ named ```code.jl```, then you can then execute it with the command:
 
 	include("code.jl")
 
-## Table of contents
+## Lectures
 
-1. [Getting started](./getting-started.md);
-2. [Structures and functions](./structs-and-funs.md);
-3. [Multiple dispatch](./multiple-dispatch.md);
-4. Linear Programming in Julia:
-   * [Linear systems](./linear-systems.md);
-   * [Linear programs](./-linear-programs.md);
-   * [Adaptive maps](./adaptive-maps.md);
-   * [Integer linear programs](./integer-programs.md).
+* Lecture 1 : [Getting started](./getting-started.md);
+* Lecture 2 : [Structures and functions](./structs-and-funs.md);
+* Lecture 3 : [Multiple dispatch](./multiple-dispatch.md).
 
 ## Links
 

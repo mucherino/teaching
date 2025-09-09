@@ -15,42 +15,32 @@ subsequent repository commits.
 * [Low-level programming](./lowlevel/README.md);
 * [GPU programming](./GPU/README.md);
 * [Julia programming](./Julia/README.md);
+* [Mathematical programming](./julia/math-prog.md);
 * [Comparing programming languages](./cmp/README.md).
 
 ## Exercises
 
-### OOP
+### Object-oriented programming and data structures
 
 * [Quaternions in Java](./OOP/Quaternions.md);
-* [The Node: first step to design collections](./OOP/TheNode.md);
+* [The Node and its important role in collections](./OOP/TheNode.md);
 * [MU-puzzle and linked lists](./OOP/MU-puzzle.md).
 
-### HPC
+### Concurrent programming
 
-#### Java multithreading
+* [OpenMP for beginners](./HPC/OpenMPbeginners.c) (in C, just compile, run, and follow the instructions).
+* [MultiAgentSSP](./HPC/MultiAgentSSP.md): several Java agents acting in parallel for the solution of a combinatorial problem!
+* [AirSimulation](./HPC/AirSimulation/README.md): several Java agents in charge to make airline reservations.
 
-* [MultiAgentSSP](./HPC/MultiAgentSSP.md): several agents acting in parallel for the solution of a combinatorial problem!
-* [AirSimulation](./HPC/AirSimulation/README.md): parallel agents in charge to reserve plane seats.
+### GPU programming
 
-#### OpenMP
-
-* [OpenMP for beginners](./HPC/OpenMPbeginners.c) (just compile, run, and follow the instructions).
-
-### GPU
-
-* [Computing the natural log of 2 on GPU](./GPU/log2series.md);
-* [Matrix transposition on GPU](./GPU/mattranspose.md).
+* [Prime factorization](./GPU/primes.md);
+* [Computing the natural log of 2](./GPU/log2series.md);
+* [Matrix transposition](./GPU/mattranspose.md).
 
 ### The Game of life
 
 * [One exercise](./HPC/game/README.md) to practise your implementation skills in both MPI and CUDA!
-
-## Last updates
-
-Two new exercises:
-
-* the MU-puzzle;
-* the MultiAgent SSP solver.
 
 --------------------
 

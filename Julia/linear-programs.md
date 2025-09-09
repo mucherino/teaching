@@ -75,7 +75,7 @@ the physician suggestions), can help you define a set of constraints on the set
 of variables $x$. For example:
 
 $$
-\left\{
+\left[
 \begin{array}{l}
 \displaystyle\sum_{i=1}^n {\tt meat[i]} \cdot x_i \ge 0.3 , \\
 \displaystyle\sum_{i=1}^n {\tt fish[i]} \cdot x_i \ge 0.6 , \\
@@ -206,5 +206,6 @@ of this linear program can be found in the file [diet.jl](./diet.jl).
 ## Links
 
 * [Next: adaptive maps](./adaptive-maps.md)
-* [Summary](./README.md)
+* [Back to math programming lectures](./README.md)
+* [Back to main repository page](../README.md)
 

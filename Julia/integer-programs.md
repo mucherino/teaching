@@ -84,5 +84,6 @@ a *carnet* of tickets for the Paris metro has certainly increased instead.
 
 ## Links
 
-* [Summary](./README.md)
+* [Back to math programming lectures](./README.md)
+* [Back to main repository page](../README.md)
 

@@ -1,5 +1,5 @@
 
-# The MU-puzzle
+# The MU-puzzle and linked lists
 
 The MU-puzzle was initially proposed by Douglas Hofstadter in his book entitled 
 [*Gödel, Escher, Bach*](https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach). 
@@ -8,7 +8,7 @@ and **U**, that can be combined together to form various chains of symbols.
 
 The puzzle asks the following question. Given the starting chain **MI**,
 can we construct the chain **MU** by applying to the starting chain a specific 
-sequence formed by exclusively the following 4 transformation rules:
+sequence formed by exclusively the following 4 transformation rules?
 
 - *rule 1* : if the chain ends with an **I**, then we can add **U** to the chain 
   (for example, **MII** becomes **MIIU**);
@@ -22,7 +22,7 @@ sequence formed by exclusively the following 4 transformation rules:
 In order to perform the exploration of all possible chains, we are going
 to develop a specific class in Java for the creation and transformation
 of the chains of symbols by applying the 4 rules given above. The Java
-class is supposed to implement an ad-hoc linked list internal structure
+class is supposed to implement an ad-hoc internal linked-list structure
 for storing the chains of symbols. The use of the standard Java classes
 implementing lists is strictly forbidden in this exercise.
 
@@ -68,8 +68,8 @@ symbols in the current chain.
 
 Notice that two possible implementations are actually possible.
 
-* In the first implementation, the ```length``` method is supposed to count
-  literally the symbols that are currently in the chain.
+* In the first implementation, the ```length``` method is supposed to literally
+  count the symbols that are currently in the chain.
 
 * In the second implementation, we want to avoid counting the symbols every
   time this is necessary. To this purpose, we include an extra attribute to 
@@ -80,5 +80,7 @@ Notice that two possible implementations are actually possible.
 Finally, compare your two implementations of this method in terms of 
 computational complexity.
 
-------------------------
+## Links
+
+* [Back to main repository page](../README.md)
 

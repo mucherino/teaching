@@ -1,9 +1,13 @@
 
 # My own absolute value function
 
+It's a very peculiar absolute value function: it 
+returns 0 when the input integer number is negative.
+
 ## C version
 
-We consider the following simple function in C:
+We consider the following simple function in C
+(see file [myabs.c](./myabs.c)):
 
 	int myabs(int a)
 	{
@@ -11,10 +15,8 @@ We consider the following simple function in C:
 	   return 0;
 	};
 
-The function, together with its header files, can also 
-be found in the file [myabs.c](./myabs.c). In order to 
-create an executable file, we can link it to the main 
-function in the file [main-myabs.c](./main-myabs.c).
+In order to create an executable file, we can link it to 
+the main function (available in the file [main-myabs.c](./main-myabs.c)).
 The reason for separating these two functions in two
 different files is that we'll compile only ```myabs```
 down to llvm and assembly; we won't do the same for the
@@ -62,19 +64,26 @@ interesting for us are given below:
 	  ret i32 %10
 	}
 
+This llvm version of the code allows us to *see* what is 
+going on in the CPUs when our simple function is running.
+In particular, we can remark that a lot of memory transfers
+between the main memory (the RAM) and the core registers
+are performed. But since our function is so small and does
+not make use of large amounts of data, it is legitimate 
+to wonder whether these memory transfers are really
+necessary. 
+
 Notice that the block of instructions under the label 6 may 
 be shorten by making direct reference to ```%4``` (instead of 
 reloading its value in ```%7```), but this will force the 
-assembly code to use additional memory in the central memory
+assembly code to use additional memory in the main memory
 to save the variable and reload it thereafter.
 
 ## Assembly version
 
-The ```clang``` compiler also allows us to compile from
-C code (or llvm code), to assembly. The full translation
-in assembly of the ```myabs``` function can be found in
-the file [myabs.asm](./myabs.asm). The lines of the code
-on which we focus our attention are the following:
+The full translation in assembly of the ```myabs``` function 
+can be found in the file [myabs.asm](./myabs.asm). The lines 
+of the code on which we focus our attention are the following:
 
 	   pushq   %rbp
 	   movq    %rsp, %rbp
@@ -90,10 +99,14 @@ on which we focus our attention are the following:
 	   movl    -4(%rbp), %eax
 	   popq    %rbp
 	   retq
+
+Again, we can remark the data transfers between the RAM and
+the core registers.
  
 ## Modifying the assembly code
 
-What about changing a little bit the assembly code?
+So, what about changing a little bit the assembly code as 
+follows?
 
 	   cmpl    $0, %edi
 	   jle     .MY_LABEL

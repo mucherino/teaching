@@ -1,7 +1,7 @@
 
 /* Collection class
  *
- * To be completed
+ * TO BE COMPLETED ...
  *
  * AM
  */
@@ -14,10 +14,8 @@ public class Collection
    private Node Gilles;
    private Node Marie;
    private Node Matteo;
-   //private DoubleNode Claire;
-   private Node Remi;
 
-   // simple constructor
+   // very simple constructor
    public Collection()
    {
       Thomas = new Node("Thomas");
@@ -25,56 +23,39 @@ public class Collection
       Gilles = new Node("Gilles");
       Marie = new Node("Marie");
       Matteo = new Node("Matteo");
-      //Claire = new DoubleNode("Claire");
-      Remi = new Node("Remi");
    }
 
-   // question 1
+   // Thomas is alone
    public void question1()
    {
-      // TO BE COMPLETED
+      // TO BE COMPLETED ...
    }
 
-   // question 2
+   // Thomas meets Anne
    public void question2()
    {
-      // TO BE COMPLETED
+      // TO BE COMPLETED ...
    }
 
-   // question 3
+   // and then he meets Marie
    public void question3()
    {
-      // TO BE COMPLETED
+      // TO BE COMPLETED ...
    }
 
-   // question 4
+   // cycle-detection method
    public boolean question4(Node node)
    {
-      // TO BE COMPLETED
-      return false;
+      return false;  // TO BE COMPLETED ...
    }
 
-   // question 5
+   // Matteo breaks the cycle
    public void question5()
    {
-      // TO BE COMPLETED
-   }
-
-   // question 6
-   public void question6()
-   {
-      // TO BE COMPLETED
-   }
-
-   // question 7
-   public int question7(Node node)
-   {
-      // TO BE COMPLETED
-      return 0;
+      // TO BE COMPLETED ...
    }
 
    @Override
-   // toString
    public String toString()
    {
       String s = "digraph Collection\n{\n";
@@ -83,8 +64,6 @@ public class Collection
       if (Gilles.hasFriend())  s = s + Gilles.toString(3) + "\n";
       if (Marie.hasFriend())  s = s + Marie.toString(3) + "\n";
       if (Matteo.hasFriend())  s = s + Matteo.toString(3) + "\n";
-      //if (Claire.hasFriend())  s = s + Claire.toString(3) + "\n";
-      if (Remi.hasFriend())  s = s + Remi.toString(3) + "\n";
       return s + "}\n";
    }
 
@@ -126,20 +105,6 @@ public class Collection
       System.out.println(C);
       answer = C.question4(person);
       System.out.println(person.getName() + " is in a cycle : " + answer);
-      System.out.println();
-      */
-
-      /*
-      System.out.println("Question 6");
-      C.question6();
-      System.out.println(C);
-      */
-
-      /*
-      System.out.println("Question 7");
-      person = C.Claire;
-      int nfriends = C.question7(person);
-      System.out.println(person.getName() + " is root for a sub-tree containing " + nfriends + " friend(s)");
       System.out.println();
       */
    }

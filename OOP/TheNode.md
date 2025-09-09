@@ -1,5 +1,5 @@
 
-# The Node
+# The Node and its importance in developing collections
 
 This exercise provides a practical introduction to data structures, using a 
 ludic pedagogical approach to enhance learning. The used programming language 
@@ -12,6 +12,8 @@ The latter will serve as a container for your ```Node``` objects. Your task
 will be to link these nodes together to represent different data structures, 
 as specified below.
 
+## The dot format
+
 [Dot](https://en.wikipedia.org/wiki/Dot) is a graph description language. 
 The ```Collection``` class has a ```toString``` method that generates a description 
 of your data structure in this format. In order to visualize this structure as 
@@ -20,6 +22,7 @@ a graph:
 1. Copy the output of the ```toString``` method into a text file (e.g., 
    "collection.dot").
 2. On Linux, run the following command:
+
 	dot -Tpng -o test.png collection.dot
 
 This command will convert the ```dot``` file into a ```png``` image that 
@@ -49,29 +52,57 @@ the result.
 Model now the situation where Gilles is friends with Marie, and Marie, who has just
 met Thomas, is friends with him.
 
-By doing so, you have created a cycle in your social network. Write a function to 
+By doing so, you have created a cycle in your "social network". Write a function to 
 determine if a given node in your network is part of a cycle. In the current situation, 
 in fact, all users should be in this cycle.
+
+In order to make things easier for us, let's suppose that only two scenarios are possible:
+
+- either the entire data structure *is* a cycle;
+- or there are no cycles at all in the data structure.
 
 ## Matteo breaks the cycle
 
 To break the cycle, make Marie friends with Matteo. Retest the method you developed 
-in the previous exercise in this new scenario.
+in the previous exercise in this new configuration.
 
-## Claire has more than one friend
+## Claire has some good suggestions for improvement
 
-Claire, being very popular, wants to have more than one friend. Create a new class, 
-name it ```DoubleNode```, that inherits from ```Node``` and allows an object to have 
-two friends. Implement this new class. 
+It is at this point that Claire, a very popular girl, comes in and suggests replacing 
+our ```Collection``` class with another one. She thinks in fact it is unacceptable to 
+have to manually add all our friends in the class constructor. A more efficient approach 
+is undoubtedly necessary!
 
-Then, decomment all lines in ```Collection``` related to Claire, and link her to both 
-Thomas and Remi. Finally, visualize the resulting friendship network.
+To facilitate this transition, she takes charge of creating a new class. She names the 
+new class ```MySocialNetwork```, even if the class will only be limited to representing 
+friendship lists, and not more complex networks. The ```MySocialNetwork``` class will 
+have two attributes: the first node in the list, as well as a positive integer indicating 
+the total number of friends in the list.
 
-## A social network with tree structure
+Please help Claire develop this new class. Start by defining the attributes, writing 
+a constructor that creates an empty list, and implement the ```length``` method.
 
-You'll notice that your social network now resembles a tree. Create a function that 
-counts the number of people in the sub-network of a given person (including that person). 
-Use recursion to solve this problem. Be careful with Claire, because she has two friends!
+## Reading the friendship list from a text file
+
+But how to pass the information about all friends in our "social network" ? To this aim,
+let's implement a second constructor for our new class to load all friends into the data 
+structure at once. We will assume that the name of each friend is stored on a separate line 
+in a text file, and that the friendship link is automatically established between each 
+consecutive pair of friends.
+
+Next, based on the ```toString``` method of the ```Collection``` class, write the 
+```toString``` method of ```MySocialNetwork``` to verify if your new constructor is 
+capable of correctly building the simple friendship network that we had previously 
+defined in the ```Collection``` class. Of course, you can still make use of the 
+```toString``` method of ```Node```.
+
+## Claire enters in the game
+
+Finally, let's add Claire to our new collection! To do so, please write the ```add``` 
+method in ```MySocialNetwork``` to include a friend to the end of the list, who will 
+be automatically linked in friendship with the person who was previously the last.
+Use ```toString``` to obtain a text representation of your data structure in dot
+format, and visualize the result.
 
 ## Links
 

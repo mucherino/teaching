@@ -244,5 +244,6 @@ The presented Julia code is available in the file [structs-and-funs.jl](./struct
 ## Links
 
 * [Next: Multiple dispatch](./multiple-dispatch.md)
-* [Summary](./README.md)
+* [Back to Julia lectures](./README.md)
+* [Back to main repository page](../README.md)
 

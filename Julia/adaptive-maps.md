@@ -176,5 +176,6 @@ please read (or watch) the provided additional material!
 ## Links
 
 * [Next: integer linear programs](./integer-programs.md)
-* [Summary](./README.md)
+* [Back to math programming lectures](./README.md)
+* [Back to main repository page](../README.md)
 

@@ -156,6 +156,6 @@ procedure, but the Sierpiński triangle is already recognizable.
 
 ## Links
 
-* [Back to HPC lectures](./README.md)
+* [Back to GPU lectures](./README.md)
 * [Back to main repository page](../README.md)
 

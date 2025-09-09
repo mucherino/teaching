@@ -52,8 +52,8 @@ Is your execution on GPU faster than the one performed on the CPU?
 
 Do you think the access to the global memory during the execution
 of the kernel may become faster if the access is guaranteed to be *coalesced*?
-It would probably be a good idea to change the kernel (if necessary)
-in order to ensure a coalesced access to the data.
+It would probably be a good idea to make sure that your kernel enforces
+a coalesced access to the data.
 
 ## Links
 

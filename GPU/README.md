@@ -1,12 +1,13 @@
 
 # GPU programming
 
-The content of this page represents an entire course for the 
-[ESIR](https://esir.univ-rennes.fr/en/welcome-eisr-graduate-school-excellence)
-engineering school of University of Rennes, and partially for the parallel 
-computing course taught at [ISTIC](https://istic.univ-rennes.fr/).
-This second course is given in collaboration with my colleague
-[Cédric Tedeschi](http://people.irisa.fr/Cedric.Tedeschi/index.html).
+The content of this page covers the entire GPU programming course that I give 
+at the [ESIR](https://esir.univ-rennes.fr/en/welcome-eisr-graduate-school-excellence)
+engineering school of University of Rennes, and partially the parallel computing 
+course taught at [ISTIC](https://istic.univ-rennes.fr/) (with
+[Cédric Tedeschi](http://people.irisa.fr/Cedric.Tedeschi/index.html)), as well as
+the parallel computing course taught at [SPM](https://spm.univ-rennes.fr/en) (with
+[Mariko Dunseath-Terao](https://perso.univ-rennes1.fr/mariko.dunseath-terao/)).
 
 ## Lectures on GPU programming in CUDA
 
@@ -18,9 +19,9 @@ This second course is given in collaboration with my colleague
 
 ## Exercises
 
-- [Prime factorization on GPU](./primes.md);
-- [Computing the natural log of 2 on GPU](./log2series.md);
-- [Matrix transposition on GPU](./mattranspose.md);
+- [Prime factorization](./primes.md);
+- [Computing the natural log of 2](./log2series.md);
+- [Matrix transposition](./mattranspose.md);
 - [The game of life](../HPC/game/README.md).
 
 ## Links

@@ -38,7 +38,7 @@ $$
 and on the fact that multiplications by power of 2 can be 
 performed by simple bit shifts. If $x$ is the *one* integer 
 number to be multiplied by 15, the following code is equivalent 
-to the simple ```15*x```:
+to ```15*x```:
 
 	unsigned long computation(unsigned long x)
 	{
@@ -49,18 +49,24 @@ to the simple ```15*x```:
 	};
 
 We can remark that this code is able to perform the multiplication 
-by executing, instead of 3 shifts and 3 integer sums, only 2 shifts
-and 2 integer sums. This is [complete C file](./xfifteen-computation.c).
+by executing only 2 shifts and 2 integer sums (instead of 3 shifts 
+and 3 integer sums). This is [C file](./xfifteen-computation.c).
 
-However, there is another way to optimize, when still working
-in C. We can noticed that the involved variables are of type 
+There is also another way to optimize (we keep working in C at the 
+moment). We can remark that the involved variables are of type 
 ```unsigned long```, corresponding to integers formed by 64 bits. 
-Therefore, we can potentially include 16 integers in only one variable 
-of this type. However, when performing the bit shifts, bits related to 
-one integer are likely to overlap with others: to prevent this issue, 
-we can simply place our initial 4-bit integers in a 8-bit chunk of the
-```unsigned long``` variable. See [the main C function](./xfifteen-main.c) 
-for more details.
+Since our integers are 4-bit long, we could potentially include 16 
+of our integers in only one variable of this type. When performing 
+the bit shifts and sums, however, additional bits will be necessary 
+for the representation of the results. For this reason, we can rather 
+consider to reserve a 8-bit chunk for each of the original 4-bit integers,
+so that the results of each multiplicatio by 15 will be able to fit in 
+the 8 bits consisting of each chunk.
+
+This is the [main C function](./xfifteen-main.c). Notice that this
+[C function](./xfifteen-computation.c) performs the desired calculations
+even when the input ```unsigned long``` contains eight 8-bit chunks each 
+containing the original 4-bit integers (and not a only a single integer).
 
 ## Assembly version
 

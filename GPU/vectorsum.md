@@ -123,8 +123,8 @@ warp perform exactly the same operation at each given instant of time**.
 They are perfectly synchronized.
 
 But how to deal then with situations where the code contain branching conditions?
-Depending on the data on which each thread is working, a different code
-branch may be selected. How the warp can deal with situations? It is not able
+Depending on the data on which each thread is working, a different code branch 
+may be selected. How the warp can deal with these situations? It is not able
 to assign different operations to its threads. At most, it can communicate 
 to some of its threads to *do nothing*.
 
@@ -183,7 +183,9 @@ This is the execution on Google Colab:
 	Computations on GPU (non-divergent) ...  done: elapsed time =  0.0202; verification: x = 6, y = 9, z = 6 (index modulo is 1)
 
 Notice that the refactored kernel replaces conditions with logic and arithmetic 
-operations.
+operations. You can make the advantage of writing non-diverging code empirically
+more evident by conceiving another example where the divergent version generates 
+more than 4 code branches.
 
 ## Shared memory
 
@@ -192,7 +194,7 @@ memory called the *shared memory*. The access to this memory is much faster
 than the access to the global memory. Using and exploiting in full what the
 shared memory offers to CUDA programmers is not trivial; in this preliminary
 overview, we will simply take advantage of the fact that its access by the
-warps is fast.
+warps is *fast*.
 
 To this purpose, we consider the problem of summing up all the elements in a
 given vector. The kernel below does not make use of the shared memory:
@@ -265,6 +267,6 @@ CUDA programming:
 ## Links
 
 * [Next: matrix-by-matrix in CUDA](./matrix-by-matrix.md)
-* [Back to HPC lectures](./README.md)
+* [Back to GPU lectures](./README.md)
 * [Back to main repository page](../README.md)
 

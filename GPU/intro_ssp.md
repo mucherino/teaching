@@ -42,22 +42,15 @@ you can refer to this
 
 ## The basic recursive algorithm
 
-How to explore the entire solution set for a given SSP? 
-Take the elements of $S$ in the given order. Suppose that the
-first element, $s_1$, is not included in a solution. Then, solve
-another SSP instance where the original set of integers is replaced 
-by $S \setminus (s_1)$. However, we need to consider 
-also the possibility that $s_1$ is included in a solution. In
-this case, take note of the current partial sum, and again, solve 
-the SSP instance having $S \setminus (s_1)$ as set of 
-integers. In general for an element $s_i$, we need to consider
-both possibilities, and to proceed to the element $s_{i+1}$ once
-the partial sum (stored in the variable ```partial``` in the code
-below) has been updated. Every time a total sum is completed, 
-the solution counter is updated if this total sum corresponds
-to the target.
-
-This is a simple implementation in C of the recursive algorithm:
+This recursive algorithm is able to count the number of solution of a given
+SSP instance. Among the function arguments, ```n``` is the size of the instance,
+```target``` is the SSP target, ```partial``` contains the partial sums obtained
+with the integers selected in previous recursive calls, and ```set``` is the array
+containing all the integers numbers in the original set. Finally, ```i``` is the
+index indicating to which integer in ```set``` we are referring at the current
+recursive call, and ```count``` will at the end contain the result. Notice that
+the pointer to ```count``` is given in argument, because all recursive call will
+have to access to the same memory location.
 
 	void recursive(size_t i,size_t n,unsigned long target,unsigned long partial,unsigned long *set,size_t *count)
 	{
@@ -107,8 +100,7 @@ You can notice that there are no recursive calls in this CUDA implementation.
 If you're new with CUDA programming, there are several details
 you need to know to fully understand this code. If you're one of
 my students, please consider to participate to the lectures. Here
-below, only the some *main points* will be briefly mentioned in
-the following subsections.
+below, only some of the *main points* will be briefly mentioned.
 
 Code snippets are given below but you can refer to the full program 
 in the file [ssp.cu](./ssp.cu). Notice that the kernel function given 
@@ -186,6 +178,6 @@ to verify that every thread has actually finished its computations:
 ## Links
 
 * [Next: GPU programming overview](./vectorsum.md)
-* [Back to HPC lectures](./README.md)
+* [Back to GPU lectures](./README.md)
 * [Back to main repository page](../README.md)
 

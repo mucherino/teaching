@@ -265,6 +265,6 @@ please refer to this [lesson](../cmp/README.md).
 
 ## Links
 
-* [Next: Linear Systems](./linear-systems.md)
-* [Summary](./README.md)
+* [Back to Julia lectures](./README.md)
+* [Back to main repository page](../README.md)
 

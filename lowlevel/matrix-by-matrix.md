@@ -1,10 +1,10 @@
 
 # Cache memory optimization
 
-Given a procedure, composed by a certain number of operations,
-which we suppose to be independent from each other, the order
-in which these operations are performed has normally no impact 
-on the performances of the overall procedure. This is not true 
+Given a specific procedure, composed by a certain number of operations,
+which we suppose to be independent from each other, one may supposed 
+that the order in which these operations are performed has normally no 
+impact on the performances of the overall procedure. This is not true
 on computer machines.
 
 ## Basic algorithm for matrix-by-matrix
@@ -25,8 +25,8 @@ matrix row:
 
 The basic (and simple) algorithm for the multiplication of the
 matrix ```A``` by the matrix ```B```, which sums up the result
-to another existing matrix ```C``` (that can be the zero matrix),
-is:
+to another existing matrix ```C``` (which could initially be the 
+zero matrix), is:
 
 	void mbm_simple(size_t n,double **A,double **B,double **C)
 	{
@@ -54,24 +54,34 @@ The key to understand why the order of the operations is important can
 be found in the particular way memory caching works. Modern CPUs are in
 fact equipped with many cache memories, at different levels, where data 
 transferred from the main memory (RAM) are stored before being finally 
-transferred to the core registers. This particular architecture takes
-advantage of the fact that, in general, when an algorithm has used a 
-given piece of data, then it is likely to use a piece of data that 
-*is stored in memory very close to the one used before*. 
+transferred to the core registers. On their way to the registers, the
+data are initially stored in the L3 cache, which is common to all CPU
+cores in the drawing below. Subsequently, the data are transferred to
+the L2 cache, and then to the L1 cache, both specifically serving the 
+cores that have requested such data. The core registers finally receive 
+the data from the corresponding L1 caches. Naturally, when data are 
+transferred in the other direction, i.e. from the registers to the RAM, 
+the opposite path through the cache memories is taken.
+
+This particular data transfer strategy takes advantage of the fact that, 
+in general, when an algorithm has just used a given piece of data, then it 
+is very likely it will subsequently need to use another piece of data that 
+*lies in memory very close to the one used before*.
 
 ![The schematic representation of the CPU](./CPU.png)
 
-At first sight, this might seem to be always the case for our simple 
-algorithm for matrix multiplications, i.e.~one may think that the three
-involved matrices may permanently stay in the cache memories. It is
-important to point out, however, that these memories are relatively 
-small (in fact, the larger they are, the slower they become), and hence, 
-when the size of our squared matrices becomes too large, they cannot fit 
-anymore into the cache memories. As a consequence, parts of the three 
-matrices need to be loaded back and forth from and to the main memory. 
-This data transfer is the cause of an important reduction on the 
-performances of the algorithm. **How many seconds out the 40 seconds 
-reported above are therefore spent by transferring data?** Try to guess!
+This might seem to be always the case for our simple algorithm for matrix 
+multiplications: once loaded in the cache, the three matrices are going
+to stay in the cache as long as our algorithm is running? No, this is
+actually not possible, even for relatively small matrices. In fact,
+cache memories are normally small in size, because in fact, the larger 
+they are, the slower they become. In general, therefore, the three
+matrices cannot entirely fit in the cache memories. As a consequence,
+during the execution of our simple algorithm, parts of the three matrices 
+will have to be loaded back and forth from and to the main memory. This 
+data transfer is the cause of an important reduction on the performances 
+of our algorithm. **How many seconds out the 40 seconds reported above 
+are actually spent by transferring data?** Try to guess!
 
 ## Block algorithm
 
@@ -117,7 +127,7 @@ deduce the basic idea behind the block algorithm:
 
 You can also make reference to the figure below:
 
-![Block algorithm scheme](./Blocks.png).
+![Block algorithm scheme](./Blocks.png)
 
 Finally, please try to answer to the following questions:
 
@@ -126,13 +136,14 @@ Finally, please try to answer to the following questions:
   time for the elements forming the blocks?
 - Why is it necessary to introduce the temporary arrays named ```blockA```, 
   ```blockB``` and ```blockC``` ? Do these array contain copies of the 
-  matrix elements?
+  matrix elements? If yes, should the computational cost actually increase 
+  because of the time necessary to perform the copies?
 
-By the way, the implementation of the block algorithm 
-**takes only 29 seconds for performing the same multiplication!** 
+By the way, this implementation of the block algorithm 
+**takes only 29 seconds for performing the same matrix multiplication!** 
 This implies that the time we saved by avoiding useless memory transfers 
-is more than 10 seconds: this is about 25% of the total time of the basic 
-algorithm!
+is more than 10 seconds, which is about 25% of the total time necessary to
+the basic algorithm for computing the multiplication!
 
 This [C file](./matrix-by-matrix.c) contains the functions reported above,
 together with other auxiliary functions and the main function. Don't 
@@ -140,6 +151,7 @@ hesitate to download it and to perform some tests on your machine!
 
 ## Links
 
+* [Next: My own absolute value function](./myabs.md)
 * [Back to low-level programming](./README.md)
 * [Back to main repository page](../README.md)
 

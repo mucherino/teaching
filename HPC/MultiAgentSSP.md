@@ -71,9 +71,8 @@ $$
 H(x) = \sum_{i \le j} Q_{ij} x_i x_j .
 $$
 
-Notice that we can neglect the term $t^2$ obtained above, because 
-it is a constant, and hence it doesn't play any role in the optimization 
-process.
+Notice that we can neglect the term $t^2$, because it is a constant, 
+and hence it doesn't play any role in the optimization process.
 
 But how to solve this optimization problem now? You'll find the details
 about our approach below; meanwhile, let's begin to develop our Java
@@ -82,7 +81,7 @@ class!
 By the way, our optimization problem is a **QUBO**, which stands for 
 "Quadratic Unconstrained Binary Optimization", where the objective
 is to find the binary vector $x$ that better minimizes $H(x)$. The
-SSP is only one of the combinatorial problems that can be formulated
+SSP is only one of several combinatorial problems that can be formulated
 as a QUBO.
 
 ## Beginning the development of our Java class
@@ -111,12 +110,13 @@ contained in the interval $[-1,1]$.
 The Boolean vector (representing a solution to the SSP) is initialized
 so that all its elements are set of *false* (i.e. 0).
 
-## What is the error?
+## How to estimate the error for an SSP solution?
 
 Before beginning with the development of our multi-agent approach for solving 
-the SSP, let's write a Java method that is capable to compute the error 
-caused by a given solution (actually by the one that is currently stored in 
-the array ```solution```). The error $e$ can be computed as:
+the SSP, we need to write a Java method that is capable to compute the error 
+associated to a given solution (actually, it's the solution which is currently 
+stored in the array ```solution``` that the method will take into account). 
+The error $e$ can be defined as:
 
 $$
 e = t - \sum_{i=1}^n x_i s_i .
@@ -232,7 +232,7 @@ long as the SSP solution has not been found yet, the agent will keep verifying
 whether its $x_i$ corresponds to the encouraged value, and if not, it will
 set it to the encouraged value with a probability that depends directly
 on the absolute value of the *bias* (recall the QUBO terms have been normalized
-in the constructor).
+in the constructor, and therefore they do represent probabilities).
 
 ## The coupling agents
 
@@ -265,9 +265,11 @@ program reduces to a sequential program is not acceptable!
 
 ## Some final comments
 
-The SSP is used also in the [first lecture](../GPU/intro_ssp.md)
-about GPU programming. Another approach to solve the combinatorial
-problem is employed in that lecture.
+The SSP is used also in the [first lecture](../GPU/intro_ssp.md) about 
+GPU programming in CUDA. Another algorithmic solution is there taken into 
+consideration, where the total number of solutions for an SSP instance
+is counted (without providing the corresponding subsets of the original
+set $S$).
 
 Were you wondering why the letter $H$ was employed in the QUBO reformulation
 for making reference to the objective function of our optimization problem?
@@ -278,10 +280,12 @@ between this energy and our combinatorial problem ... Well, an approach to the
 SSP (and to several other combinatorial problems that admit a QUBO reformulation) 
 is to find the minimum energy of the Hamiltonian $H(x)$ by using *adiabatic 
 quantum computing* (see for example the machines developed by the 
-[D-wave](https://www.dwavequantum.com/) company. In this quantum approach,
+[D-wave](https://www.dwavequantum.com/) company). In this quantum approach,
 the binary variables are encoded via *qbits*, their values are controled by 
 the *spin* of these qbits, while the coupling effects between pairs of qbits 
-are regulated through the *entanglement* phenomenon.
+are regulated through the quantum *entanglement* phenomenon.
 
----------
+## Links
+
+* [Back to main repository page](../README.md)
 

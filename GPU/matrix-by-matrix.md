@@ -250,6 +250,6 @@ a $1 \times 64$ grid, then our code becomes 3 times faster!
 ## Links
 
 * [Next: shared memory](./shared-matrix.md)
-* [Back to HPC lectures](./README.md)
+* [Back to GPU lectures](./README.md)
 * [Back to main repository page](../README.md)
 

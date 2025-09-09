@@ -32,7 +32,7 @@ about the topic, the YouTube channel
 has devoted several videos to Convey and its game of life. This is 
 [one of the videos](https://www.youtube.com/watch?v=R9Plq-D1gEk).
 
-# A simple C version
+## A simple C version
 
 The file [gamelife.c](./gamelife.c) proposes a simple implementation in
 C programming language of the game of life. The torus is represented by
