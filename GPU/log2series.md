@@ -1,5 +1,5 @@
 
-# Exercise: computing mathematical series on GPU
+# Computing mathematical series on GPU
 
 ## Computing $\ln(2)$
 

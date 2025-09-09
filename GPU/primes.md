@@ -1,7 +1,7 @@
 
-# Exercise: prime factorization on GPU
+# Prime factorization on GPU
 
-## Prime factorization
+## What is prime factorization?
 
 Prime factorization is one of the hardest known mathematical problems.
 Finding a general and efficient solution for this problem would allow

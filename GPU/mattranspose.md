@@ -1,5 +1,5 @@
 
-# Exercise: matrix transposition on GPU
+# Matrix transposition on GPU
 
 In this exercise, we are going to consider a simple yet potentially
 expensive operation to perform on matrices. The transpose $A^T$ of a

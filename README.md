@@ -15,7 +15,7 @@ subsequent repository commits.
 * [Low-level programming](./lowlevel/README.md);
 * [GPU programming](./GPU/README.md);
 * [Julia programming](./Julia/README.md);
-* [Mathematical programming](./julia/math-prog.md);
+* [Mathematical programming](./Julia/math-prog.md);
 * [Comparing programming languages](./cmp/README.md).
 
 ## Exercises

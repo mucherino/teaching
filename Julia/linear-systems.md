@@ -117,6 +117,6 @@ define and solve linear systems.
 ## Links
 
 * [Next: linear programs](./linear-programs.md)
-* [Back to math programming lectures](./README.md)
+* [Back to math programming lectures](./math-prog.md)
 * [Back to main repository page](../README.md)
 

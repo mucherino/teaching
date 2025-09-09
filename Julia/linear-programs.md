@@ -206,6 +206,6 @@ of this linear program can be found in the file [diet.jl](./diet.jl).
 ## Links
 
 * [Next: adaptive maps](./adaptive-maps.md)
-* [Back to math programming lectures](./README.md)
+* [Back to math programming lectures](./math-prog.md)
 * [Back to main repository page](../README.md)
 
