@@ -2,9 +2,7 @@
 /*
  * Code for loading the thread identifiers with CUDA on GPU
  *
- * This code works only for one-dimensional topologies
- *
- * last update: December 6th, 2023
+ * This code works ONLY for one-dimensional topologies
  *
  * AM
  */

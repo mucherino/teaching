@@ -3,9 +3,9 @@
 
 The content of this page covers the entire GPU programming course that I give 
 at the [ESIR](https://esir.univ-rennes.fr/en/welcome-eisr-graduate-school-excellence)
-engineering school of University of Rennes, and partially the parallel computing 
-course taught at [ISTIC](https://istic.univ-rennes.fr/) (with
-[Cédric Tedeschi](http://people.irisa.fr/Cedric.Tedeschi/index.html)), as well as
+engineering school of University of Rennes, and partially (as long as GPU programming
+is concerned) the parallel computing course taught at [ISTIC](https://istic.univ-rennes.fr/) 
+(with [Cédric Tedeschi](http://people.irisa.fr/Cedric.Tedeschi/index.html)), as well as
 the parallel computing course taught at [SPM](https://spm.univ-rennes.fr/en) (with
 [Mariko Dunseath-Terao](https://perso.univ-rennes1.fr/mariko.dunseath-terao/)).
 
@@ -15,7 +15,7 @@ the parallel computing course taught at [SPM](https://spm.univ-rennes.fr/en) (wi
 - [Lecture 2](./vectorsum.md) : A GPU programming overview (Simple operations on vectors);
 - [Lecture 3](./matrix-by-matrix.md) : 2D grids and coalesced memory access (Matrix by matrix multiplications);
 - [Lecture 4](./shared-matrix.md) : Shared memory (Performing several operations on matrices);
-- [Lecture 5](./sierpinski.md) : CUDA streams (Sierpinski fractal).
+- [Lecture 5](./sierpinski.md) : CUDA streams (Sierpiński fractal).
 
 ## Exercises
 

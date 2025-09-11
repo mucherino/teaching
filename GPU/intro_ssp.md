@@ -71,18 +71,17 @@ have to access to the same memory location.
 
 ## CUDA implementation
 
-Our approach for this CUDA implementation is particularly tailored
-to the GPU structure. Instead of running our program on a single 
-core of a CPU, we are going to have, on our GPU, several threads
-running simultaneously and in cooperation for solving a given SSP
-instance. Since the number of parallel threads can importantly
-grow when using more modern GPUs, we can consider to assign *each
-sum to compute* to a single thread. 
+Our approach for this CUDA implementation is particularly tailored to the 
+GPU structure. Instead of running our program on a single core of a CPU, 
+we are going to have, on our GPU, several threads running simultaneously 
+and in cooperation for solving a given SSP instance. Since we can have
+several threads running in parallel when using modern GPUs, we can consider
+to assign to each thread *only one subset sum to compute*.
 
-The function that is supposed to run on the GPU is named **kernel**,
-and this is how it looks like for our specific problem:
+The function that is supposed to run on the GPU is named **kernel**, and 
+this is how it looks like for our specific problem:
 
-	__global__ void ssp_on_gpu(size_t n,unsigned long *set_gpu,unsigned long *sum_gpu)
+	__global__ void ssp_on_gpu(size_t n,unsigned long *set_gpu,bool *is_solution_gpu,unsigned long target)
 	{
 	   unsigned long sum = 0UL;
 	   size_t id = (blockIdx.x*blockDim.x) + threadIdx.x;
@@ -92,20 +91,24 @@ and this is how it looks like for our specific problem:
 	      sum = sum + (id%2)*set_gpu[i];
 	      id = id >> 1;
 	   };
-	   sum_gpu[copy] = sum;
+	   is_solution_gpu[copy] = (sum == target);
 	};
 
 You can notice that there are no recursive calls in this CUDA implementation.
 
-If you're new with CUDA programming, there are several details
-you need to know to fully understand this code. If you're one of
-my students, please consider to participate to the lectures. Here
-below, only some of the *main points* will be briefly mentioned.
+If you're new with CUDA programming, there are several details you 
+need to know to fully understand this code. If you're one of my 
+students, please consider to participate to the lectures. Here below, 
+only some of the *main points* will be briefly mentioned.
 
-Code snippets are given below but you can refer to the full program 
-in the file [ssp.cu](./ssp.cu). Notice that the kernel function given 
-above only computes the sums; it's the CPU that will be in charge of
-verifying how many sums actually correspond to the given target $t$.
+Code snippets are given below but you can refer to the full program in 
+the file [ssp.cu](./ssp.cu). Notice that this kernel code is executed by 
+all threads involved in the computation, where each of them makes reference 
+to a different subset. Each thread is supposed to verify whether the 
+subset that is *assigned to the thread* is, or not, a solution to the SSP 
+(i.e., it verifies if the sum of its elements actually corresponds to the 
+given target). This GPU approach requires an extra computing step that is
+finally executed on the CPU.
 
 ### Thread identifiers
 
@@ -115,65 +118,89 @@ in order to have a clearer understanding. Basically, for architectural
 reasons, threads are grouped in blocks: a predefined number of threads
 can be found in every block, and a predefined number of blocks can be
 found in every GPU. Things are a little more complex than that, actually,
-but for the moment, this is all we need to know. Consider, however, 
-that the number of blocks and available threads may differ from our
-needs when we want to run a specific program.
+but for the moment, this is all we need to know. Consider, however, that 
+the number of *physical* blocks, as well as the number of available threads 
+per block, may differ from our specific needs.
 
-In our kernel, each thread needs to have a *unique* identifier,
-because its identifier also corresponds to the binary vector $x$
-representing the solution the thread is supposed to compute ...
+In our kernel, each thread needs to have a *unique* identifier, because 
+its identifier also corresponds to the binary vector $x$ representing 
+the solution (the subset) that the thread is supposed to verify ...
 
 ### GPU global memory
 
-The two arrays of type ```unsigned long``` in our kernel function
-are marked with the label ```_gpu```, because they are actually
-supposed to be allocated on the global memory of our GPU device.
-It is said that this memory is *global* because all threads are
-able to read and write on it. Differently from the CPU, however,
-which is able to exchange information directly with the RAM, it
-is necessary here to manually move data from and to the global
-memory before and/or after performing computations on the GPU.
+The arrays that are supposed to be allocated on the global memory of 
+the GPU are marked with the label ```_gpu```. We say that the memory 
+is *global* because all GPU threads are able to read from, and write 
+on it. Differently from the CPU, however, which is able to exchange 
+information directly with the RAM, it is necessary here to manually 
+move the data from and to the global memory before and/or after 
+performing computations on the GPU.
 
-For our example, it is therefore necessary to move the original 
-set of integers on the global memory. Before transferring the 
-data, we need to allocate memory on the GPU:
+For our example, it is therefore necessary to move the original set 
+of integers to the global memory. Before transferring the data, it is
+necessary to allocate the memory on the GPU global memory:
 
 	cudaMalloc((void**)&set_gpu,n*sizeof(unsigned long));
-	cudaMalloc((void**)&sum_gpu,total_threads*sizeof(unsigned long));
 
-Then, we can transfer the content of the array ```set```, 
-allocated on the RAM, to the array ```set_gpu``` that we have
+Once the memory allocated, we can transfer the content of the array 
+```set```, previously defined on the RAM, to the array ```set_gpu```,
 just allocated on the global memory:
 
 	cudaMemcpy(set_gpu,set,n*sizeof(unsigned long),cudaMemcpyHostToDevice);
 
-The second array, named ```sum_gpu```, that we have allocated on
-the global memory, is going to be used to store all the computed
-sums. When the computations are finally done on the GPU, it is 
-necessary to transfer these sums from the global memory to the RAM:
+The second array, named ```is_solution```, is going to hold the information 
+on whether the subset assigned to a given thread is an SSP solution or not. 
+It is an array of booleans:
 
-	cudaMemcpy(sum,sum_gpu,total_threads*sizeof(unsigned long),cudaMemcpyDeviceToHost);
+	cudaMalloc((void**)&is_solution_gpu,total_threads*sizeof(bool));
 
-otherwise the CPU won't be able to have access to them.
+This information is the result of the computations that are going to be 
+executed on the GPU. After the computations, the content of this array can 
+be retrieved from the global memory and stored in the RAM:
+
+	cudaMemcpy(is_solution,is_solution_gpu,total_threads*sizeof(bool),cudaMemcpyDeviceToHost);
+
+Both ```set``` and ```is_solution``` are "traditional" arrays allocated on the 
+RAM through a call to ```calloc```.
 
 ### Launching the kernel
 
-From the main C function (running on CPU), it's the following line 
-of code that launches the kernel:
+From the main C function (running on CPU), it's the following line of code 
+that launches the kernel:
 
-	ssp_on_gpu<<<nblocks,nthreads>>>(n,set_gpu,sum_gpu);
+	ssp_on_gpu<<<nblocks,nthreads>>>(n,set_gpu,is_solution_gpu,target);
 
-Apart from the standard arguments for the C function, there are 
-other additional arguments related to the particular setup we wish 
-to have for our GPU. The argument ```nblocks``` indicates how many 
-blocks we intend to allocate on the GPU for running our kernel. 
-The argument ```nthreads``` indicates moreover the number of threads 
-to allocate in each block. 
+Apart from the standard arguments for the C function, we can notice other 
+additional arguments related to the particular setup we wish to have for our 
+GPU. The argument ```nblocks``` indicates how many blocks we intend to allocate 
+on the GPU for running our kernel. The argument ```nthreads``` indicates 
+moreover the number of threads to allocate in each block. 
 
-Before transferring the results to the RAM, it is fundamental
-to verify that every thread has actually finished its computations:
+Before transferring the results to the RAM, it is fundamental to verify that 
+every thread has actually finished its computations:
 
 	cudaDeviceSynchronize();
+
+## Performance of GPU version
+
+If you run this code on GPU, you are probably not going to observe an 
+extremely high improvement in the computational speed. In fact, in order 
+to keep things as easy as possible at the moment, we made the choice to 
+assign *only one subset* to each involved thread in our little CUDA code.
+
+Can you think of a more complex implementation where every thread is
+actually in change to work on a chunk of possible subsets of the SSP?
+Recall that the subsets are represented in our code through the binary
+representations of the thread identifiers: this binary representation 
+may actually be used to define the *family* of subsets that are assigned
+to a given thread. Naturally, at this point, additional bits will be 
+necessary to enumarate the full SSP solution set.
+
+In case you're discovering CUDA programming with this lecture, then it
+is probably not a good idea to work on this extension of the code right away. 
+You're rather invited to make the other exercises available on this repository,
+and to come back to this code extension only when you'll feel more familiar 
+with GPU programming and CUDA.
 
 ## Links
 

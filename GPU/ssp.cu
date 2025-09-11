@@ -2,9 +2,9 @@
 /* 
  * Recursive algorithm for the Subset Sum Problem (SSP) on GPU
  *
- * We are only interested in verifying whether solutions exist;
+ * We are only interested in verifying how many solutions exist;
  * we do not intend to output the list of integers forming the 
- * found solution (i.e. the subsets).
+ * found subsets whose element sum up to the target.
  *
  * AM
  */
@@ -15,9 +15,10 @@
 
 /* GPU kernel */
 
-// every thread computes the sum of the subset encoded by the binary version
-// of its own identifier ;-)
-__global__ void ssp_on_gpu(size_t n,unsigned long *set_gpu,unsigned long *sum_gpu)
+// every thread computes the sum of the subset encoded by the binary
+// representation of its own identifier ;-)
+// then, it verifies whether the computed sum corresponds to the target
+__global__ void ssp_on_gpu(size_t n,unsigned long *set_gpu,bool *is_solution_gpu,unsigned long target)
 {
    unsigned long sum = 0UL;
    size_t id = (blockIdx.x*blockDim.x) + threadIdx.x;
@@ -27,7 +28,7 @@ __global__ void ssp_on_gpu(size_t n,unsigned long *set_gpu,unsigned long *sum_gp
       sum = sum + (id%2)*set_gpu[i];
       id = id >> 1;
    };
-   sum_gpu[copy] = sum;
+   is_solution_gpu[copy] = (sum == target);
 };
 
 // recursive algorithm in sequential
@@ -63,14 +64,16 @@ int main(int argc,char *argv[])
    size_t nblocks = 2048;  // idem
    size_t total_threads = nblocks*nthreads;
    size_t n = 0UL;
+   bool *is_solution;
+   bool *is_solution_gpu;
    unsigned long count,partial;
-   unsigned long target,*set,*sum;
-   unsigned long *set_gpu,*sum_gpu;
+   unsigned long target,*set;
+   unsigned long *set_gpu;
    time_t startclock,endclock;
-   float time;
+   float time,gpu_time,transfer_time;
 
    // welcome message
-   printf("Recursive algorithm for SSP with CUDA on GPU\n");
+   printf("Subset Sum Problem (SSP)\n");
    printf("nblocks = %lu, nthreads = %lu\n",nblocks,nthreads);
 
    // computing SSP size for the given search space (one sum per thread)
@@ -84,7 +87,7 @@ int main(int argc,char *argv[])
 
    // memory allocation for the CPU
    set = (unsigned long*)calloc(n,sizeof(unsigned long));
-   sum = (unsigned long*)calloc(total_threads,sizeof(unsigned long));
+   is_solution = (bool*)calloc(total_threads,sizeof(bool));
 
    // generating a simple SSP instance
    target = 0UL;
@@ -93,6 +96,9 @@ int main(int argc,char *argv[])
       set[i] = rand()%10;  // integers between 0 and 9
       if (rand()%2)  target = target + set[i];
    };
+
+   // initializing the array is_solution
+   for (size_t i = 0; i < total_threads; i++)  is_solution[i] = false;
 
    // counting the number of solutions in sequential
    count = 0UL;
@@ -103,40 +109,46 @@ int main(int argc,char *argv[])
    time = compute_time(startclock,endclock);
 
    // printing the solution obtained in sequential
-   printf("Recursive algorithm says that %lu subsets correspond to the SSP target (time %16.13lf)\n",count,time);
+   printf("Recursive algorithm says that %lu subsets correspond to the SSP target\n",count);
+   printf("=> time : %8.7f\n",time);
 
    // memory allocation on GPU
    cudaMalloc((void**)&set_gpu,n*sizeof(unsigned long));
-   cudaMalloc((void**)&sum_gpu,total_threads*sizeof(unsigned long));
+   cudaMalloc((void**)&is_solution_gpu,total_threads*sizeof(bool));
 
    // moving the set of integers on GPU global memory
    cudaMemcpy(set_gpu,set,n*sizeof(unsigned long),cudaMemcpyHostToDevice);
 
    // launching the kernel
    startclock = clock();
-   ssp_on_gpu<<<nblocks,nthreads>>>(n,set_gpu,sum_gpu);
+   ssp_on_gpu<<<nblocks,nthreads>>>(n,set_gpu,is_solution_gpu,target);
    cudaDeviceSynchronize();
+   endclock = clock();
+   gpu_time = compute_time(startclock,endclock);
 
-   // retrieving the computed sums
-   cudaMemcpy(sum,sum_gpu,total_threads*sizeof(unsigned long),cudaMemcpyDeviceToHost);
+   // retrieving the array is_solution
+   startclock = clock();
+   cudaMemcpy(is_solution,is_solution_gpu,total_threads*sizeof(bool),cudaMemcpyDeviceToHost);
+   endclock = clock();
+   transfer_time = compute_time(startclock,endclock);
 
-   // counting the number of sums that are equal to the target
+   // summing up the count values received from each thread
+   startclock = clock();
    count = 0UL;
-   for (size_t i = 0; i < total_threads; i++)
-   {
-      if (sum[i] == target)  count++;
-   };
-
-   // printing the result obtained with the help of the GPU
+   for (size_t i = 0; i < total_threads; i++)  if (is_solution[i])  count++;
    endclock = clock();
    time = compute_time(startclock,endclock);
-   printf("GPU parallel approach says that %lu subsets correspond to the SSP target (time %16.13f)\n",count,time);
+
+   // printing the result obtained with the help of the GPU
+   printf("GPU parallel approach says that %lu subsets correspond to the SSP target\n",count);
+   printf("=> time : %8.7f ",gpu_time + transfer_time + time);
+   printf("[%8.7f (GPU), %8.7f (transfer), %8.7f (CPU)]\n",gpu_time,transfer_time,time);
 
    // freing memory
    cudaFree(set_gpu);
-   cudaFree(sum_gpu);
+   cudaFree(is_solution_gpu);
    free(set);
-   free(sum);
+   free(is_solution);
 
    // ending
    return 0;
