@@ -17,6 +17,9 @@ the parallel computing course taught at [SPM](https://spm.univ-rennes.fr/en) (wi
 - [Lecture 4](./shared-matrix.md) : Shared memory (Performing several operations on matrices);
 - [Lecture 5](./sierpinski.md) : CUDA streams (Sierpiński fractal).
 
+This [CUDA code](./exploratory.cu) is an initial attempt to cover several aspects 
+of GPU programming in one unique program.
+
 ## Exercises
 
 - [Prime factorization](./primes.md);
