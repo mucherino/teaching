@@ -1,0 +1,154 @@
+
+/*
+ * Matrix by matrix with optimized cache memory access
+ *
+ * all matrices are supposed to be squared matrices
+ *
+ * our Kotlin functions will compute the matrix C such that C = C + A*B
+ *
+ * code initially written by Ruikang Tao (EIT Master student 2024-25)
+ */
+
+import kotlin.random.Random
+import kotlin.system.measureNanoTime
+val random = Random(999)
+
+// size of the square matrix
+const val MATRIX_SIZE = 2500
+
+// number of blocks
+const val NUM_BLOCKS = 20
+
+// drand (random number in [0,1] with 3 decimal digits)
+fun doubleRandom(): Double = random.nextInt(1000).toDouble() / 1000.0
+
+// generating a squared matrix of size n and with elements equal to 0.0
+fun matrixZeros(n: Int): Array<DoubleArray> {
+    require(n > 0)
+    return Array(n) { DoubleArray(n) }
+}
+
+// generating a random squared matrix of size n with elements in [0,max]
+fun matrixRandom(n: Int): Array<DoubleArray> = Array(n) { DoubleArray(n) { doubleRandom() } }
+
+// printing a squared matrix (only when the matrix is small for easy observation results)
+fun matrixPrint(n: Int, A: Array<DoubleArray>) {
+    assert(n > 0) { "Matrix size must be greater than 0" }
+    println("[")
+    for (i in 0 until n) {
+        println("    ${A[i].joinToString(" ") { String.format("%8.4f", it) }}")
+    }
+    println("]")
+}
+
+// helper function to multiply sub-blocks of matrices
+// -> computes C_sub = C_sub + A_sub * B_sub
+fun multiplySubMatrixBlocks(
+    blockSize: Int,
+    matrixA: Array<DoubleArray>, aStartRow: Int, aStartCol: Int,
+    matrixB: Array<DoubleArray>, bStartRow: Int, bStartCol: Int,
+    matrixC: Array<DoubleArray>, cStartRow: Int, cStartCol: Int
+) {
+    // i: row, j: column, k: inner index
+    for (i in 0 until blockSize) {
+        for (j in 0 until blockSize) {
+            for (k in 0 until blockSize) {
+                matrixC[cStartRow + i][cStartCol + j] += matrixA[aStartRow + i][aStartCol + k] * matrixB[bStartRow + k][bStartCol + j]
+            }
+        }
+    }
+}
+
+// matrix-by-matrix by squared blocks
+fun blockMatrixMultiplication(
+    numBlocks: Int,
+    blockSize: Int,
+    matrixA: Array<DoubleArray>,
+    matrixB: Array<DoubleArray>,
+    matrixC: Array<DoubleArray>
+) {
+    assert(numBlocks > 0) { "Number of blocks must be greater than 0" }
+    assert(blockSize > 0) { "Block size must be greater than 0" }
+
+    // performing computations by blocks
+    for (iBlock in 0 until numBlocks) {
+        for (jBlock in 0 until numBlocks) {
+            for (kBlock in 0 until numBlocks)
+            {
+                multiplySubMatrixBlocks(
+                   blockSize,
+                   matrixA, iBlock * blockSize, kBlock * blockSize,
+                   matrixB, kBlock * blockSize, jBlock * blockSize,
+                   matrixC, iBlock * blockSize, jBlock * blockSize
+                )
+            }
+        }
+    }
+}
+
+// matrix-by-matrix simple implementation
+fun mbmSimple(matrixSize: Int, matrixA: Array<DoubleArray>, matrixB: Array<DoubleArray>, matrixC: Array<DoubleArray>) {
+    // i: row, j: column, k: inner index
+    for (i in 0 until matrixSize) {
+        for (j in 0 until matrixSize) {
+            for (k in 0 until matrixSize) {
+                matrixC[i][j] += matrixA[i][k] * matrixB[k][j]
+            }
+        }
+    }
+}
+
+// main
+fun main() {
+    System.err.println("Matrix-by-matrix multiplication (MATRIX_SIZE = $MATRIX_SIZE, NUM_BLOCKS = $NUM_BLOCKS)")
+    assert(MATRIX_SIZE % NUM_BLOCKS == 0) { "MATRIX_SIZE must be able to be removed by NUM_BLOCKS" }
+
+    // preparing the matrices
+    val matrixA = matrixRandom(MATRIX_SIZE)
+    val matrixB = matrixRandom(MATRIX_SIZE)
+    var matrixC = matrixZeros(MATRIX_SIZE)
+
+    if (MATRIX_SIZE < 11) {
+        println("A =")
+        matrixPrint(MATRIX_SIZE, matrixA)
+        println("B =")
+        matrixPrint(MATRIX_SIZE, matrixB)
+        println("C =")
+        matrixPrint(MATRIX_SIZE, matrixC)
+    }
+
+    // matrix-by-matrix multiplication (simple)
+    System.err.print("Computing C = C + A*B with simple algorithm ... ")
+    val timeSimple = measureNanoTime {
+        mbmSimple(MATRIX_SIZE, matrixA, matrixB, matrixC)
+    }
+    System.err.println("done!")
+
+    // printing the result
+    val timeSimpleSec = timeSimple / 1e9
+    if (MATRIX_SIZE < 11) {
+        println("C =")
+        matrixPrint(MATRIX_SIZE, matrixC)
+    }
+    System.err.println("Clock time = $timeSimpleSec seconds")
+
+    // cleaning up the matrix C (resetting to zero)
+    matrixC = matrixZeros(MATRIX_SIZE)
+
+    // matrix-by-matrix multiplication (by blocks)
+    System.err.print("Computing C = C + A*B with block algorithm ... ")
+    val eachSubMatrixSize = MATRIX_SIZE / NUM_BLOCKS
+    val timeBlock = measureNanoTime {
+        blockMatrixMultiplication(NUM_BLOCKS, eachSubMatrixSize, matrixA, matrixB, matrixC)
+    }
+    System.err.println("done!")
+
+    // printing the result
+    val timeBlockSec = timeBlock / 1e9
+    if (MATRIX_SIZE < 11) {
+        println("C =")
+        matrixPrint(MATRIX_SIZE, matrixC)
+    }
+    System.err.println("Clock time (including extra memory allocation and freeing) = $timeBlockSec seconds")
+}
+

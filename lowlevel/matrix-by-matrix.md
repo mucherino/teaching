@@ -145,9 +145,24 @@ This implies that the time we saved by avoiding useless memory transfers
 is more than 10 seconds, which is about 25% of the total time necessary to
 the basic algorithm for computing the multiplication!
 
+For simplicity, no further optimization strategies are presented. The code,
+indeed, may be further improved by paying attention to the *internal* order in 
+which the elements of every matrix block is accessed. We may consider for example
+to reorganize the three ```for``` loops involved in the naive algorithm, or to 
+transpose some of the defined blocks.
+
 This [C file](./matrix-by-matrix.c) contains the functions reported above,
 together with other auxiliary functions and the main function. Don't 
 hesitate to download it and to perform some tests on your machine!
+
+One of my students (Ruikang Tao, 2025) has translated the provided C code 
+into Kotlin: [matrix-by-matrix.kl](./matrix-by-matrix.kl).
+Obviously, since Kotlin cannot make explicit use of pointers, the 
+definition of the matrix blocks has been implemented differently. It is 
+interesting however to note that, even though the naive algorithm is 
+much slower in Kotlin (when compared to the C version), the block 
+algorithm performs similarly in both C and Kotlin. Again, do not 
+hesitate to download all codes and to perform some tests!
 
 ## Links
 

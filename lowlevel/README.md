@@ -3,8 +3,6 @@
 
 In this section, we are going to explore a few possible
 ways for improving our programs when working at low level.
-The C language will be the programming language at the highest
-level that we're going to use in these lessons. 
 
 In some of these lessons, we will use the 
 [```clang```](https://clang.llvm.org) compiler to generate
