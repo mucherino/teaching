@@ -51,6 +51,8 @@ Now we introduce another data structure, which inherits from ```Person```:
 	   research_fields::Vector{String}
 	end
 
+The full code for this lecture is [available here](./multiple-dispatch.jl).
+
 ## Computer structures
 
 We define now an abstract type representing computer devices, and three 
@@ -168,12 +170,12 @@ but they do research:
 Again, this method for the ```work``` function takes a specific instance of ```Person```,
 but the abstract type ```Computer```. The Julia code:
 
-	Eistein = Scientist("Eistein",["Quantum Gravity","Faster-Than-Light Communication"]);
-	work(Eistein,quantum)
+	Einstein = Scientist("Einstein",["Quantum Gravity","Faster-Than-Light Communication"]);
+	work(Einstein,quantum)
 
 produces:
 
-	Eistein is doing research on a Quantum computer
+	Einstein is doing research on a Quantum computer
 
 How many implementations of ```work``` do we have up to now? 3 methods!
 
@@ -205,7 +207,9 @@ we get the output:
 	Antonio is introducing the basis of quantum physics
 	Programming on a Quantum computer requires this introduction
 
-So, to sum up, how many situations can be dealt with our methods?
+## To sum up
+
+So, how many situations can be dealt with our methods?
 
 - a kid that is playing with a gaming console;
 - a teacher that is teaching to code on any kind of computer device (as long as they 
@@ -214,12 +218,18 @@ So, to sum up, how many situations can be dealt with our methods?
 - a teacher that is teaching to code on a quantum computer;
 - a scientist that is doing research on any kind of computer devices.
 
-The selection of the method to invoke is indeed done by Julia by taking the type
-of all input arguments into consideration.
+The selection of the method to invoke is indeed performed by Julia by taking into 
+account the type of all input arguments. The *dispatching tree* is shown in the 
+figure below.
 
-## Question :-)
+![Dispatching Tree](./multiple-dispatch.png)
 
-Wanna try to have to program a similar method selection strategy in programming languages
+**One question**: what if we introduce another kind of ```Person``` in our code?
+Which methods of the generic function ```work``` could be invoked in this case?
+
+## Another question :-)
+
+Wanna try to have to write a similar method selection strategy in programming languages
 which do not support multiple-dispatch? If yes, do not read (not yet) the next sections,
 otherwise you may lose the will to try this out.
 
@@ -243,18 +253,16 @@ all its arguments.
 
 ### Single-dispatch in other languages
 
-Other languages give the possibility to benefit from a similar dispatching mechanism,
-but by selecting only one variable at a time. This is the case of languages, already 
-mentioned above, such as Java and C++. Since these are object-oriented languages,
-they focus the attention on the *object*. When a given object invokes one of its
-methods (which may be implemented also in other classes, implementing for example 
-a common interface), then the selection of the method to invoke is also performed at 
-run time. 
+Other languages offer similar dispatching mechanisms, but they typically select the 
+implementation based on only one variable at a time. This is common in the aforementioned 
+object-oriented languages, such as Java and C++, which focus primarily on the object. 
+In these languages, when an object invokes one of its methods, the specific implementation 
+is selected at runtime based on that single calling object.
 
-Julia does the same! But with a big difference: since object-oriented languages focus
-on the object, the dispatch is performed by taking only *the calling object* into 
-consideration. The dispatching mechanism in Julia is instead more general, because it 
-takes all function arguments into account, with equal importance.
+Julia operates on the same principle, but with a fundamental difference: while object-oriented 
+languages perform single dispatch by considering only the calling object, Julia’s mechanism is 
+more general. It utilizes multiple dispatch, taking the types of all function arguments into 
+account with equal importance when selecting the most appropriate method to execute.
 
 ## For a deeper understanding of multiple-dispatch
 

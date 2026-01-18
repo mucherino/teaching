@@ -79,10 +79,9 @@ can be loaded as follows:
 	A = [1 2 3; 4 5 6; 7 8 9];
 
 The elements belonging to the same row need to be separated by a blank character, 
-while a semi-colon indicates that we are about to step from one row to the following. 
+while a semi-colon indicates that we are about to step from one row to the next. 
 The ending semi-colon indicates to Julia that we *do not* want the result of the 
-performed operation (in this case, the operation simply consists in loading the
-elements of the matrix) to appear on the screen. Without the use of the ending 
+performed operation to appear on the screen. In fact, without the use of the ending 
 semi-colon, Julia would have answered to our command with:
 
 	3×3 Matrix{Int64}:
@@ -113,7 +112,7 @@ Finally, if we execute the line ```c = A*b```, we get the following answer:
 	 15
 	 24
 
-which has type ```Vector{Int64}```.
+which is of type ```Vector{Int64}```.
 
 We can remark that this Julia syntax and basic functionalities are very similar 
 (they are likely to have influenced Julia's developers, actually) to those of
