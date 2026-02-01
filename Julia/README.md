@@ -25,7 +25,12 @@ named ```code.jl```, then you can then execute it with the command:
 
 * Lecture 1 : [Getting started](./getting-started.md);
 * Lecture 2 : [Structures and functions](./structs-and-funs.md);
-* Lecture 3 : [Multiple dispatch](./multiple-dispatch.md).
+* Lecture 3 : [Multiple dispatch](./multiple-dispatch.md);
+* Lecture 4 : *coming soon*...
+
+## Exercises
+
+* [Chemical reactions](./substances.md).
 
 ## Links
 

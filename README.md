@@ -38,6 +38,10 @@ subsequent repository commits.
 * [Computing the natural log of 2](./GPU/log2series.md);
 * [Matrix transposition](./GPU/mattranspose.md).
 
+### Julia programming
+
+* [Chemical reactions](./Julia/substances.md).
+
 ### The Game of life
 
 * [One exercise](./HPC/game/README.md) to practise your implementation skills in both MPI and CUDA!
